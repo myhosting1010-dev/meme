@@ -6,6 +6,12 @@ Status: real coin API integration complete. Final lint, 8 unit tests, production
 
 ## How It Works — screenshot 1
 
+### Index search fix — 2026-10-14
+
+Owner confirmed How It Works is finished and requested search beyond the latest-profile cohort. Updated `/api/coins?q=...` to query DEX Screener's actual search endpoint. Added validated/encoded queries, reusable pair normalization without requiring latest profiles, query-associated UI state, debounce/abort cleanup and proper loading/no-results/failure handling. Removed the secondary local name-only filter for provider results, allowing contract-address matches. Clearing search restores the normal feed. Owner's hidden status indicator preserved; How It Works unchanged.
+
+Modified src/services/dexscreener-data.js, src/app/api/coins/route.js, src/features/coins/coin-browser.jsx, src/components/ui/search-input.jsx, tests/unit/dexscreener-data.test.js, docs/API_SPECIFICATION.md and this log. Added regression checks for tokens outside latest profiles, URL encoding, image/metric retention, deduplication, empty results, validation and provider failure. Lint passed, all 11 tests passed, production build passed. Live local API checks: BONK search returned 10 coins; contract-address search returned the expected Bonk token; unmatched search returned empty coins; oversized query returned HTTP 400. Owned server stopped. Hydrated browser typing/cancellation behavior remains unverified because no browser is connected. Scope complete; How It Works preserved.
+
 ### FAQ answers enabled — 2026-10-14
 
 Owner supplied all three missing answers. Updated src/features/how-it-works/faq-section.jsx to use one reusable accordion rendering path for four questions. Clicking a question opens its supplied answer and closes the previously open answer; clicking again collapses it. Subscription stays open initially. Buttons support native keyboard activation and expose aria-expanded/aria-controls, with labeled answer regions. Supplied wording retained verbatim, including Gemflow in answer 1; existing question branding retained. Earlier notes about disabled/pending answers are now historical.

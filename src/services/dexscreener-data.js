@@ -26,7 +26,17 @@ function imageUrl(value) {
   }
 }
 
-export function normalizePairs(pairs, profiles) {
+export function normalizePairs(pairs, profiles = null) {
+  if (profiles === null) {
+    const tokens = new Map();
+    for (const raw of pairs) {
+      const result = pairSchema.safeParse(raw);
+      if (!result.success) continue;
+      const pair = result.data;
+      tokens.set(`${pair.chainId}:${pair.baseToken.address}`, { chainId: pair.chainId, tokenAddress: pair.baseToken.address });
+    }
+    profiles = [...tokens.values()];
+  }
   const byToken = new Map();
   const wanted = new Set(profiles.map((profile) => `${profile.chainId}:${profile.tokenAddress}`));
   for (const raw of pairs) {
@@ -55,6 +65,20 @@ export function normalizePairs(pairs, profiles) {
       activity24h: pair.txns?.h24 ? pair.txns.h24.buys + pair.txns.h24.sells : null,
     }];
   });
+}
+
+export const coinSearchSchema = z.string().trim().max(200);
+
+export async function searchCoins(query, fetcher = fetch) {
+  const term = coinSearchSchema.parse(query);
+  if (!term) throw new Error("Search query required");
+  const response = await fetcher(`https://api.dexscreener.com/latest/dex/search?q=${encodeURIComponent(term)}`, {
+    headers: { Accept: "application/json" }, signal: AbortSignal.timeout(12000), next: { revalidate: 30 },
+  });
+  if (!response.ok) throw new Error("Coin search unavailable");
+  const data = await response.json();
+  if (!Array.isArray(data.pairs)) throw new Error("Invalid coin search response");
+  return { coins: normalizePairs(data.pairs.slice(0, 100)), source: "DEX Screener", fetchedAt: new Date().toISOString(), partial: false };
 }
 
 export async function fetchCoinFeed(fetcher = fetch) {

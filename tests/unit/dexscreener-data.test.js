@@ -1,10 +1,29 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { fetchCoinFeed, normalizePairs } from "../../src/services/dexscreener-data.js";
+import { fetchCoinFeed, normalizePairs, searchCoins } from "../../src/services/dexscreener-data.js";
 import { formatPrice, formatUsd } from "../../src/features/coins/format-values.js";
 
 const profile = { chainId: "solana", tokenAddress: "abc123" };
 const pair = { chainId: "solana", pairAddress: "pair123", baseToken: { address: "abc123", name: "Test token", symbol: "TEST" }, liquidity: { usd: 100 }, marketCap: 1000, volume: { h24: 50 }, priceChange: { h24: -2 }, priceUsd: "0.00000125", pairCreatedAt: 123, txns: { h24: { buys: 2, sells: 3 } } };
+
+test("search finds tokens outside latest profiles and retains real images/metrics", async () => {
+  let requestedUrl;
+  const response = await searchCoins("  Wrapped Bitcoin  ", async (url) => {
+    requestedUrl = url;
+    return Response.json({ pairs: [{ ...pair, info: { imageUrl: "https://cdn.dexscreener.com/test.png" } }, { ...pair, liquidity: { usd: 500 } , info: { imageUrl: "https://cdn.dexscreener.com/test.png" } }] });
+  });
+  assert.equal(requestedUrl, "https://api.dexscreener.com/latest/dex/search?q=Wrapped%20Bitcoin");
+  assert.equal(response.coins.length, 1);
+  assert.equal(response.coins[0].liquidity, 500);
+  assert.equal(response.coins[0].imageUrl, "https://cdn.dexscreener.com/test.png");
+});
+
+test("search distinguishes empty results from failures and rejects overlong queries", async () => {
+  assert.deepEqual((await searchCoins("nothing", async () => Response.json({ pairs: [] }))).coins, []);
+  await assert.rejects(searchCoins("x".repeat(201), async () => { throw new Error("Must not fetch"); }));
+  await assert.rejects(searchCoins("SOL", async () => new Response("", { status: 429 })), /unavailable/);
+  await assert.rejects(searchCoins("SOL", async () => Response.json({ invalid: true })), /Invalid/);
+});
 
 test("normalization selects highest liquidity, deduplicates tokens, and skips invalid/unrelated pairs", () => {
   const coins = normalizePairs([pair, { ...pair, liquidity: { usd: 200 } }, {}, { ...pair, baseToken: { ...pair.baseToken, address: "other" } }], [profile]);
