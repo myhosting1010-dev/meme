@@ -20,7 +20,7 @@ const calls = [
 export default function HowItWorks() {
   return (
     <div className={styles.page}>
-      <a href="#how-it-works" className="skip-link">Skip to content</a>
+      <a href="#how-it-works" className="skip-link">Skip to contents</a>
       <header className={styles.header}>
         <a href={samePage} className={styles.brand}><span className="brand-gem" aria-hidden="true" />{site.name}</a>
         <nav className={styles.navigation} aria-label="How it works navigation">
