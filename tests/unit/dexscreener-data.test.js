@@ -1,10 +1,27 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { fetchCoinFeed, normalizePairs, searchCoins } from "../../src/services/dexscreener-data.js";
+import { coinPairUrl, fetchCoinPair, fetchCoinFeed, normalizePairs, searchCoins } from "../../src/services/dexscreener-data.js";
 import { formatPrice, formatUsd } from "../../src/features/coins/format-values.js";
 
 const profile = { chainId: "solana", tokenAddress: "abc123" };
 const pair = { chainId: "solana", pairAddress: "pair123", baseToken: { address: "abc123", name: "Test token", symbol: "TEST" }, liquidity: { usd: 100 }, marketCap: 1000, volume: { h24: 50 }, priceChange: { h24: -2 }, priceUsd: "0.00000125", pairCreatedAt: 123, txns: { h24: { buys: 2, sells: 3 } } };
+
+test("detail fetch uses the exact selected pair and preserves its identity", async () => {
+  const result = await fetchCoinPair("solana", "pair123", async (url) => {
+    assert.equal(url, "https://api.dexscreener.com/latest/dex/pairs/solana/pair123");
+    return Response.json({ pairs: [pair, { ...pair, pairAddress: "otherpair", liquidity: { usd: 999 } }] });
+  });
+  assert.equal(result.pairAddress, "pair123");
+  assert.equal(result.liquidity, 100);
+  assert.equal(await fetchCoinPair("solana", "missing", async () => Response.json({ pairs: null })), null);
+});
+
+test("chart URLs restrict identifiers and pair fetch surfaces provider failures", async () => {
+  assert.equal(coinPairUrl("solana", "pair123"), "https://dexscreener.com/solana/pair123");
+  assert.match(coinPairUrl("solana", "pair123", true), /embed=1.*trades=1/);
+  assert.throws(() => coinPairUrl("https://evil.example", "pair123"));
+  await assert.rejects(fetchCoinPair("solana", "pair123", async () => new Response("", { status: 503 })), /unavailable/);
+});
 
 test("search finds tokens outside latest profiles and retains real images/metrics", async () => {
   let requestedUrl;

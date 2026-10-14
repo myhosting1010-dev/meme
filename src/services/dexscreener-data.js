@@ -5,7 +5,7 @@ const profileSchema = z.object({ chainId: identifier, tokenAddress: identifier, 
 const optionalNumber = z.number().finite().nullable().optional();
 const pairSchema = z.object({
   chainId: identifier,
-  pairAddress: z.string().min(1),
+  pairAddress: identifier,
   baseToken: z.object({ address: identifier, name: z.string().max(300), symbol: z.string().max(100) }),
   marketCap: optionalNumber,
   liquidity: z.object({ usd: optionalNumber }).nullable().optional(),
@@ -57,6 +57,7 @@ export function normalizePairs(pairs, profiles = null) {
     const price = pair.priceUsd == null || pair.priceUsd.trim() === "" ? null : Number(pair.priceUsd);
     return [{
       id, name: pair.baseToken.name, symbol: pair.baseToken.symbol, chain: pair.chainId,
+      pairAddress: pair.pairAddress,
       imageUrl: imageUrl(pair.info?.imageUrl) ?? imageUrl(profile.icon),
       marketCap: pair.marketCap ?? null, volume24h: pair.volume?.h24 ?? null,
       liquidity: pair.liquidity?.usd ?? null, change24h: pair.priceChange?.h24 ?? null,
@@ -68,6 +69,27 @@ export function normalizePairs(pairs, profiles = null) {
 }
 
 export const coinSearchSchema = z.string().trim().max(200);
+
+export const coinPairParamsSchema = z.object({ chain: identifier, pair: identifier });
+
+export function coinPairUrl(chain, pair, embed = false) {
+  coinPairParamsSchema.parse({ chain, pair });
+  const url = `https://dexscreener.com/${encodeURIComponent(chain)}/${encodeURIComponent(pair)}`;
+  return embed ? `${url}?embed=1&theme=dark&chartTheme=dark&info=0&trades=1` : url;
+}
+
+export async function fetchCoinPair(chain, pair, fetcher = fetch) {
+  coinPairParamsSchema.parse({ chain, pair });
+  const response = await fetcher(`https://api.dexscreener.com/latest/dex/pairs/${encodeURIComponent(chain)}/${encodeURIComponent(pair)}`, {
+    headers: { Accept: "application/json" }, signal: AbortSignal.timeout(12000), next: { revalidate: 15 },
+  });
+  if (!response.ok) throw new Error("Pair data unavailable");
+  const data = await response.json();
+  if (data.pairs === null) return null;
+  if (!Array.isArray(data.pairs)) throw new Error("Invalid pair response");
+  const match = data.pairs.filter((item) => item.chainId === chain && item.pairAddress === pair);
+  return normalizePairs(match)[0] ?? null;
+}
 
 export async function searchCoins(query, fetcher = fetch) {
   const term = coinSearchSchema.parse(query);

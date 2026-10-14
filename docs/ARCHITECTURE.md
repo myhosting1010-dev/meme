@@ -46,6 +46,8 @@ Screenshot-oriented CSS tokens/layouts replace neutral Phase 1 styles. Mobile/ta
 
 ## Owner-requested real coin feed
 
+Coin details extension: list rows retain the selected pool's pairAddress and link to `/coins/{chain}/{pair}`. Validated read-only pair API calls the fixed DEX Screener host and exact selected pool. Client metadata polls every 30 seconds with cleanup; page component is keyed by pair to reset state on navigation. DEX Screener iframe supplies chart/trades with a source-link fallback and sandbox restrictions. No order execution or fabricated Peak calculation is introduced. Custom native transaction rendering remains dependent on an appropriate verified raw-trade feed.
+
 `/api/coins` is a read-only Node Route Handler using a server-only feed cache. A separate testable adapter validates DEX Screener profiles/pairs with Zod and serializes a bounded token list. Fixed upstream paths prevent arbitrary proxy requests. Upstream calls have timeouts, grouped token requests and per-process single-flight caching. Error details are sanitized; partial responses are labeled. No live DB or API key is needed.
 
 The browser fetches on mount and every minute, aborts on cleanup, filters/sorts the real cohort and preserves a last successful feed during errors. Missing metrics remain null, not fabricated zeros. Historical charts and return multipliers were removed because selected endpoints do not supply them. Scaling requires shared quota/cache decisions before broad deployment.

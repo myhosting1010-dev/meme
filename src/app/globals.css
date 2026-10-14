@@ -111,6 +111,26 @@ button:disabled { cursor: not-allowed; }
 .coin-avatar.avatar--blue { font-size: 25px; }
 .coin-avatar--image { overflow: hidden; background: #0b0d10; }
 .coin-avatar-image { width: 100%; height: 100%; object-fit: cover; }
+.coin-card-link { color: inherit; text-decoration: none; }
+.coin-card-link:hover { background: #161924; }
+.detail-toolbar { display: flex; align-items: center; gap: 24px; min-height: 126px; padding: 22px; border-bottom: 1px solid var(--border); background: #050505; }
+.detail-identity { display: flex; align-items: center; gap: 16px; min-width: 180px; }
+.detail-symbol { color: var(--muted); font-size: 14px; }
+.detail-identity h1 { font-size: 24px; font-weight: 750; overflow-wrap: anywhere; }
+.detail-copy { display: flex; align-items: center; gap: 5px; background: transparent; border: 0; color: var(--accent); font-size: 11px; padding: 4px 0; }
+.detail-metrics { display: flex; gap: 40px; margin-left: 24px; }
+.detail-metrics span { display: block; font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+.detail-metrics strong { display: block; font-size: 25px; }
+.detail-peak { color: #ffab00; }
+.detail-buy { margin-left: auto; display: flex; padding: 6px; border: 1px solid var(--border); border-radius: 12px; background: #0a0d11; }
+.detail-buy input { max-width: 130px; background: transparent; border: 0; padding: 8px; color: var(--muted); }
+.detail-buy button { background: var(--accent); color: #001c15; font-weight: 700; }
+.detail-chart-label { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 22px; background: #090c13; border-bottom: 1px solid var(--border); }
+.detail-chart-label a { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 12px; }
+.detail-chart { width: 100%; height: 780px; border: 0; background: #090c13; display: block; }
+.detail-note { padding: 16px 22px; font-size: 12px; color: var(--muted); }
+@media (max-width: 1200px) { .detail-toolbar { flex-wrap: wrap; } .detail-metrics { margin-left: 0; gap: 24px; } }
+@media (max-width: 650px) { .detail-toolbar { padding: 16px; gap: 16px; } .detail-buy { margin-left: 0; } .detail-metrics { width: 100%; justify-content: space-between; gap: 12px; } .detail-metrics strong { font-size: 21px; } .detail-chart-label { flex-wrap: wrap; padding: 16px; } .detail-chart { height: 850px; } }
 .sparkline { color: #00e5aa; }
 .sparkline--red { color: #ff3438; }
 .sparkline svg { width: 100%; max-width: 190px; overflow: visible; }

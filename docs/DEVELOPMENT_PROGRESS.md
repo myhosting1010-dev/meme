@@ -6,6 +6,14 @@ Status: real coin API integration complete. Final lint, 8 unit tests, production
 
 ## How It Works — screenshot 1
 
+### Coin detail screenshot — 2026-10-14
+
+Owner requested clicking coins to open chart/market details/trade feed. Added pair identity to normalized rows, keyboard-accessible card links, `/coins/{chain}/{pair}` detail route, and validated `/api/coins/{chain}/{pair}` API using the actual selected DEX Screener pool. Metadata polls every 30 seconds. Detail view retains shared sidebar and displays token logo/name, market cap, 24H volume, copy token address and provider chart/trades embed. Added source link, back navigation and error/retry handling. No fake candles or orders. Peak multiplier is unavailable and shown as —; Buy disabled because no trading integration is authorized/implemented.
+
+Created src/features/coins/coin-detail.jsx, src/app/coins/[chain]/[pair]/page.jsx, src/app/api/coins/[chain]/[pair]/route.js. Modified src/services/{dexscreener-data.js,coin-feed.js}, src/features/coins/coin-card.jsx, src/app/globals.css, tests/unit/dexscreener-data.test.js, docs/{API_SPECIFICATION.md,ARCHITECTURE.md,REFERENCE_ANALYSIS.md} and this log. Feed cache key versioned to avoid old hot-reload entries missing pair addresses. New tests cover exact-pair selection, embed URL validation, missing pairs and upstream failure. Final lint passed; all 13 tests passed; production build passed. Live Raydium detail API returned the selected pair and real market metrics; page returned HTTP 200 with header and chart/trades embed URL; invalid pair ID returned 400. Owned verification server stopped. How It Works remains untouched. Owner does not know Peak's baseline; it remains unavailable rather than invented.
+
+Limit: screenshot's custom live-feed styling is not reproduced as a fabricated table. The provider embed supplies its own chart/trade UI. Browser rendering and feed availability must be verified in a connected browser; current session has none. A custom native feed and Peak require a verified data source/definition.
+
 ### Index search fix — 2026-10-14
 
 Owner confirmed How It Works is finished and requested search beyond the latest-profile cohort. Updated `/api/coins?q=...` to query DEX Screener's actual search endpoint. Added validated/encoded queries, reusable pair normalization without requiring latest profiles, query-associated UI state, debounce/abort cleanup and proper loading/no-results/failure handling. Removed the secondary local name-only filter for provider results, allowing contract-address matches. Clearing search restores the normal feed. Owner's hidden status indicator preserved; How It Works unchanged.
