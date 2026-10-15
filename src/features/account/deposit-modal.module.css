@@ -1,0 +1,32 @@
+.modal { position: fixed; inset: 0; margin: auto; width: min(660px, calc(100vw - 32px)); max-width: none; max-height: calc(100dvh - 40px); overflow: auto; padding: 0; border: 1px solid #232838; border-radius: 32px; background: #101119; color: #f5f5f8; }
+.modal::backdrop { background: #000c; backdrop-filter: blur(6px); }
+.header { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 29px 35px; border-bottom: 1px solid #232838; }
+.header h2 { display: flex; align-items: center; gap: 15px; margin: 0; font-size: 26px; font-weight: 700; }
+.header h2 svg { color: #9259ff; flex-shrink: 0; }
+.header > button { display: grid; place-items: center; flex-shrink: 0; width: 40px; height: 40px; padding: 0; border: 1px solid #232838; border-radius: 50%; background: #050608; color: #858d9a; }
+.body { padding: 44px; }
+.amountLabel { display: block; margin-bottom: 13px; color: #858d9a; text-transform: uppercase; font-size: 16px; letter-spacing: 1px; }
+.amount { display: flex; align-items: center; gap: 11px; padding: 19px 22px; border: 1px solid #232838; border-radius: 17px; background: #090c10; }
+.amount > span { color: #00dba1; font-size: 24px; font-weight: 700; }
+.amount input { width: 100%; min-width: 0; padding: 0; border: 0; background: transparent; color: #a1a6b2; font-size: 26px; font-weight: 600; outline: none; }
+.amount:focus-within { outline: 2px solid #00dba1; outline-offset: 3px; }
+.selection { margin-top: 32px; padding-top: 33px; border-top: 1px solid #232838; }
+.selection h3 { margin: 0 0 20px; font-size: 19px; font-weight: 600; }
+.options { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 11px; }
+.options button { min-height: 46px; padding: 10px; border: 1px solid #232838; border-radius: 17px; background: #050505; color: #858d9a; font-weight: 700; overflow-wrap: anywhere; }
+.options button[aria-pressed="true"] { border-color: #00dba1; background: #1a1d26; color: white; }
+.destination { margin-top: 33px; padding: 22px; border: 1px solid #232838; border-radius: 17px; background: #050505; }
+.destinationTitle { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; margin-bottom: 13px; font-size: 15px; color: #858d9a; }
+.destinationTitle strong { color: #00dba1; font-weight: 500; }
+.walletAddress { display: flex; overflow: hidden; border: 1px solid #232838; border-radius: 11px; background: #12141e; }
+.walletAddress code { flex: 1; min-width: 0; padding: 18px; overflow-wrap: anywhere; user-select: all; font-size: 14px; }
+.walletAddress button { flex-shrink: 0; padding: 0 23px; border: 0; border-left: 1px solid #232838; background: #1a1d26; color: #00dba1; font-weight: 600; }
+.picture { margin-top: 15px; color: #9299a7; font-size: 13px; }
+.picture summary { cursor: pointer; }
+.picture img { display: block; max-width: 100%; max-height: 230px; margin: 18px auto 0; object-fit: contain; border-radius: 10px; }
+.confirm { display: flex; align-items: center; justify-content: center; gap: 11px; width: 100%; min-height: 70px; margin-top: 33px; padding: 15px; border: 0; border-radius: 17px; background: #8b55f6; box-shadow: 0 6px 28px #7f4bff25; color: white; font-size: 21px; font-weight: 700; }
+.confirm:hover { background: #9b68ff; }
+.confirm:disabled { opacity: .5; }
+.status { color: #a9b0bd; font-size: 14px; line-height: 1.6; }
+.footnote { margin: 22px 0 0; color: #858d9a; font-size: 12px; line-height: 1.6; text-align: center; }
+@media (max-width: 600px) { .modal { border-radius: 23px; } .header { padding: 22px; } .header h2 { font-size: 21px; gap: 10px; } .body { padding: 26px 22px; } .amountLabel { font-size: 13px; } .options { grid-template-columns: repeat(2, minmax(0, 1fr)); } .destination { padding: 16px; } .walletAddress code { padding: 14px; font-size: 12px; } .walletAddress button { padding-inline: 15px; } .confirm { font-size: 17px; min-height: 60px; } }

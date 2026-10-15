@@ -6,6 +6,7 @@ playwright-report/
 test-results/
 .env*
 !.env.example
+.admin-credentials.local.json
 *.log
 .DS_Store
 Thumbs.db

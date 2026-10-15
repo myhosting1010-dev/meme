@@ -1,0 +1,70 @@
+.modal { width: min(1024px, calc(100vw - 32px)); max-width: none; max-height: calc(100dvh - 40px); padding: 0; border: 1px solid #292d3c; border-radius: 28px; background: #101119; color: #f5f5f8; overflow: auto; }
+.modal { position: fixed; inset: 0; margin: auto; }
+.modal::backdrop { background: #000b; backdrop-filter: blur(5px); }
+.content { min-width: 0; }
+.header { display: flex; justify-content: space-between; gap: 20px; padding: 26px 30px 29px; border-bottom: 1px solid #232633; }
+.riskMenu { position: relative; }
+.riskMenu summary { display: flex; align-items: center; gap: 12px; width: fit-content; font-size: 36px; font-weight: 750; letter-spacing: -1px; line-height: 1.15; cursor: pointer; list-style: none; }
+.riskMenu summary::-webkit-details-marker { display: none; }
+.riskMenu summary svg { color: #858b97; }
+.options { position: absolute; top: calc(100% + 46px); left: 0; z-index: 2; width: 275px; padding: 10px; border: 1px solid #2c3044; border-radius: 17px; background: #171924; box-shadow: 0 12px 30px #0002; }
+.options button { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 17px 12px; border: 0; border-radius: 8px; background: transparent; color: white; font-size: 19px; text-align: left; }
+.options button:hover { background: #222633; }
+.options button[aria-pressed="true"] { color: #00dba1; }
+.returns { display: flex; align-items: center; gap: 12px; margin: 12px 0 0; font-size: 20px; font-weight: 600; }
+.returns svg { color: #ffa22c; fill: #ffa22c; }
+.actions { display: flex; flex-direction: column; align-items: flex-end; gap: 19px; }
+.topActions { display: flex; align-items: center; gap: 23px; }
+.period { display: flex; align-items: center; position: relative; }
+.period select { appearance: none; border: 1px solid #2d3145; border-radius: 24px; padding: 10px 40px 10px 17px; background: #1a1c26; color: #e3e3eb; cursor: pointer; }
+.period svg { position: absolute; right: 16px; pointer-events: none; color: #858b97; }
+.close { display: grid; place-items: center; padding: 4px; border: 0; background: transparent; color: #858b97; }
+.callsLink { display: flex; align-items: center; gap: 6px; padding: 0; border: 0; background: transparent; color: #acb0bf; font-size: 18px; }
+.body { padding: 0 29px 12px; }
+.metrics { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; padding: 49px 0 38px; text-align: center; }
+.metrics strong { display: block; margin-bottom: 12px; font-size: 34px; line-height: 1.2; }
+.metrics span { display: block; color: #9096a3; font-size: 14px; }
+.positive { color: #00dba1; }
+.stat { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 21px 0; border-bottom: 1px solid #1d202d; font-size: 20px; }
+.stat > span { display: flex; align-items: center; gap: 15px; color: #858d9a; }
+.stat strong { white-space: nowrap; }
+.negative { color: #ff343e; }
+.panels { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-top: 44px; }
+.panel { padding: 28px 27px; border: 1px solid #232737; border-radius: 17px; background: #12141e; }
+.panel h2, .callList h2 { margin: 0; font-size: 20px; font-weight: 700; }
+.performer { display: flex; align-items: center; gap: 15px; margin-top: 30px; }
+.performer > span { color: #9096a3; }
+.performer i { display: grid; place-items: center; width: 39px; height: 39px; border-radius: 50%; background: #5140e9; font-style: normal; font-size: 29px; }
+.performer strong { font-size: 21px; }
+.performer small { display: block; margin-top: 5px; color: #9096a3; font-size: 14px; }
+.performer b { margin-left: auto; color: #00dba1; font-size: 21px; }
+.distributionToggle { display: flex; align-items: center; justify-content: space-between; gap: 10px; width: 100%; padding: 0; border: 0; background: transparent; color: inherit; text-align: left; font-weight: inherit; }
+.distributionToggle svg { color: #858d9a; }
+.distribution { display: flex; align-items: center; gap: 17px; margin-top: 35px; }
+.distribution span { color: #9096a3; white-space: nowrap; }
+.distribution div { flex: 1; height: 11px; border-radius: 10px; background: #00dba1; }
+.distribution strong { font-weight: 400; }
+.note { margin: 12px 0 0; font-size: 11px; color: #858d9a; }
+.callList { margin-top: 22px; padding: 24px; border: 1px solid #232737; border-radius: 17px; }
+.callList > div { display: flex; justify-content: space-between; margin-top: 20px; }
+.callList small { color: #9096a3; }
+.callList strong { color: #00dba1; }
+@media (max-width: 650px) {
+  .modal { border-radius: 20px; }
+  .header { padding: 22px 18px; gap: 12px; }
+  .riskMenu summary { font-size: 24px; gap: 5px; }
+  .returns { font-size: 14px; gap: 6px; }
+  .topActions { gap: 9px; }
+  .period select { font-size: 13px; padding-left: 12px; padding-right: 30px; }
+  .period svg { right: 9px; }
+  .callsLink { font-size: 13px; }
+  .options { width: 240px; top: calc(100% + 42px); }
+  .body { padding-inline: 18px; }
+  .metrics { grid-template-columns: repeat(3, 1fr); row-gap: 26px; padding-block: 30px; }
+  .metrics strong { font-size: 28px; }
+  .stat { font-size: 15px; }
+  .stat > span { gap: 8px; }
+  .panels { grid-template-columns: 1fr; margin-top: 26px; gap: 16px; }
+  .panel { padding: 24px 20px; }
+  .panel h2 { font-size: 18px; }
+}

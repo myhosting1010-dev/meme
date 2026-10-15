@@ -58,6 +58,13 @@ button:disabled { cursor: not-allowed; }
 .button { display: inline-flex; align-items: center; justify-content: center; gap: 9px; border: 1px solid var(--border); border-radius: 10px; background: transparent; color: var(--foreground); padding: 10px 16px; font-size: 14px; }
 .invite-button { margin-top: 10px; width: 100%; color: var(--muted); }
 .account { margin-top: 50px; }
+.sidebar-user { display: flex; align-items: center; gap: 14px; padding: 12px 15px; color: var(--foreground); text-decoration: none; border: 1px solid transparent; border-radius: 11px; }
+.sidebar-user:hover, .sidebar-user[aria-current="page"] { background: #09241e; border-color: #07513e; color: var(--accent); }
+.sidebar-user > svg { flex-shrink: 0; color: var(--accent); }
+.sidebar-user > div { min-width: 0; }
+.sidebar-user strong { display: block; overflow: hidden; text-overflow: ellipsis; font-size: 16px; }
+.sidebar-user small { display: flex; align-items: center; gap: 6px; margin-top: 6px; color: var(--muted); font-size: 12px; }
+.sidebar-user small i { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
 .sidebar--collapsed .brand-row { padding: 0 12px; flex-direction: column; justify-content: center; gap: 9px; }
 .sidebar--collapsed .brand-name, .sidebar--collapsed .nav-item span, .sidebar--collapsed .nav-group { display: none; }
 .sidebar--collapsed .sidebar-content { padding: 20px 10px; }

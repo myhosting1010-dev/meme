@@ -41,7 +41,7 @@ export function CoinBrowser() {
   return (
     <>
       <header className="coin-toolbar">
-        <details className="list-info"><summary aria-label="About this coin list"><Info size={17} /></summary><div className="info-popover">Search DEX Screener by coin name, symbol, or contract address. Without a search, shows latest-profile tokens. Each token uses its most liquid returned pair. Sorts apply to returned results; Trending uses 24-hour trades and Newest uses pair creation time. Refreshes every minute. Missing values display —.</div></details>
+        <details className="list-info"><summary aria-label="About this coin list"><Info size={17} /></summary><div className="info-popover">Search  by coin name, symbol, or contract address. Without a search, shows latest-profile tokens. Each token uses its most liquid returned pair. Sorts apply to returned results; Trending uses 24-hour trades and Newest uses pair creation time. Refreshes every minute. Missing values display —.</div></details>
         <div className="sort-controls" role="group" aria-label="Sort coins">{sortOptions.map((option) => <Button key={option.id} variant="tab" aria-pressed={sort === option.id} onClick={() => setSort(option.id)}>{option.id === "trending" && <Flame size={16} className="flame-icon" aria-hidden="true" />}{option.label}</Button>)}</div>
         <SearchInput value={query} onChange={setQuery} />
         {/* <span className={`system-status ${error ? "system-status--offline" : ""}`}><i aria-hidden="true" />{error ? "Feed offline" : feed ? "API data" : "Loading"}</span> */}
@@ -50,8 +50,8 @@ export function CoinBrowser() {
         <h1 id="coin-list-title" className="sr-only">Coin discovery</h1>
         <p className="sr-only" role="status">{coins.length} coins shown, sorted by {sortOptions.find((option) => option.id === sort)?.label}.</p>
         {error && <div className="feed-error" role="alert"><p>{error} {currentFeed && "Showing the last successful update for this search."}</p><Button onClick={() => { setFailure(null); setRetry((value) => value + 1); }}>Retry</Button></div>}
-        {!currentFeed && !error ? <CoinListSkeleton /> : coins.length ? <ul className="coin-list">{coins.map((coin) => <CoinCard key={coin.id} coin={coin} />)}</ul> : !error && <div className="empty-state"><SearchX size={32} aria-hidden="true" /><h2>No coins found</h2><p>{term ? "DEX Screener returned no matching tokens. Try the contract address or another name." : "No pair data is currently available for the latest profiles."}</p>{term && <Button onClick={() => setQuery("")}>Clear search</Button>}</div>}
-        {currentFeed && <p className="demo-note">DEX Screener · {currentFeed.partial ? "Partial feed · " : ""}Updated {new Date(currentFeed.fetchedAt).toLocaleTimeString()} · Refreshes every minute</p>}
+        {!currentFeed && !error ? <CoinListSkeleton /> : coins.length ? <ul className="coin-list">{coins.map((coin) => <CoinCard key={coin.id} coin={coin} />)}</ul> : !error && <div className="empty-state"><SearchX size={32} aria-hidden="true" /><h2>No coins found</h2><p>{term ? "Returned no matching tokens. Try the contract address or another name." : "No pair data is currently available for the latest profiles."}</p>{term && <Button onClick={() => setQuery("")}>Clear search</Button>}</div>}
+        {/* {currentFeed && <p className="demo-note">DEX Screener · {currentFeed.partial ? "Partial feed · " : ""}Updated {new Date(currentFeed.fetchedAt).toLocaleTimeString()} · Refreshes every minute</p>} */}
       </section>
     </>
   );

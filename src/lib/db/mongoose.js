@@ -12,6 +12,7 @@ export async function connectDatabase() {
     cache.promise = mongoose.connect(MONGODB_URI, {
       bufferCommands: false,
       autoIndex: process.env.NODE_ENV !== "production",
+      serverSelectionTimeoutMS: 5000,
     });
   }
 

@@ -1,0 +1,34 @@
+.modal { width: min(550px, calc(100vw - 32px)); max-width: none; max-height: calc(100dvh - 40px); padding: 0; overflow: auto; border: 1px solid #232838; border-radius: 28px; color: #f5f5f8; background: #101119; }
+.modal { position: fixed; inset: 0; margin: auto; }
+.modal::backdrop { background: #000b; backdrop-filter: blur(6px); }
+.content { position: relative; padding: 46px 44px 44px; }
+.close { position: absolute; top: 22px; right: 22px; display: grid; place-items: center; width: 40px; height: 40px; border: 1px solid #252b39; border-radius: 50%; background: #050608; color: #838c9a; }
+.brand { display: flex; align-items: center; justify-content: center; gap: 19px; margin: 0 0 36px; font-size: 29px; font-weight: 750; letter-spacing: .5px; }
+.tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; padding: 6px; border: 1px solid #252b39; border-radius: 17px; background: #050505; }
+.tabs button { padding: 13px; border: 0; border-radius: 12px; background: transparent; color: #858d99; font-size: 19px; }
+.tabs button[aria-pressed="true"] { background: #101119; color: white; }
+.form { display: grid; gap: 24px; margin-top: 56px; }
+.signup { margin-top: 34px; }
+.form > label { display: block; color: #858d99; font-size: 16px; text-transform: uppercase; }
+.form > label > span { text-transform: none; color: #555c69; }
+.form > label > input { box-sizing: border-box; display: block; width: 100%; height: 57px; margin-top: 10px; padding: 0 22px; border: 1px solid #252b39; border-radius: 17px; color: white; background: #050505; font-size: 19px; }
+.form input::placeholder { color: #a0a5af; }
+.form input:autofill { color: #080b11; background: #e8f0ff; }
+.formOptions { display: flex; justify-content: space-between; align-items: center; gap: 12px; color: #858d99; font-size: 16px; }
+.formOptions label { display: flex; align-items: center; gap: 10px; }
+.formOptions input { width: 17px; height: 17px; margin: 0; accent-color: #00dba1; }
+.formOptions button { padding: 0; border: 0; background: transparent; color: #00dba1; }
+.submit { width: 100%; min-height: 64px; border: 0; border-radius: 17px; background: #00dba1; color: #00130f; font-size: 21px; font-weight: 700; }
+.submit:hover { background: #00edb0; }
+.submit:disabled { opacity: .6; }
+.error { margin: 0; font-size: 14px; color: #ff8188; line-height: 1.5; }
+.toast { position: fixed; top: 29px; right: 27px; display: flex; align-items: center; gap: 18px; max-width: calc(100vw - 40px); padding: 20px 24px; border: 1px solid #232838; border-radius: 17px; background: #101119; color: white; font-size: 17px; box-shadow: 0 8px 30px #0005; }
+.toast svg { color: #ff343e; flex-shrink: 0; }
+@media (max-width: 600px) {
+  .content { padding: 48px 24px 28px; }
+  .brand { font-size: 25px; gap: 14px; }
+  .close { top: 12px; right: 12px; width: 32px; height: 32px; }
+  .form { margin-top: 32px; gap: 21px; }
+  .formOptions { font-size: 13px; }
+  .toast { top: 12px; right: 12px; padding: 16px; font-size: 14px; }
+}
