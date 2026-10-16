@@ -1,10 +1,19 @@
 .modal { position: fixed; inset: 0; margin: auto; width: min(660px, calc(100vw - 32px)); max-width: none; max-height: calc(100dvh - 40px); overflow: auto; padding: 0; border: 1px solid #232838; border-radius: 32px; background: #101119; color: #f5f5f8; }
 .modal::backdrop { background: #000c; backdrop-filter: blur(6px); }
+.toast { position: fixed; z-index: 2; top: 18px; right: 18px; display: flex; align-items: center; gap: 12px; max-width: min(440px, calc(100vw - 36px)); padding: 15px 17px; border: 1px solid #145340; border-radius: 13px; background: #101a19; color: #e9fff8; font-size: 14px; line-height: 1.45; box-shadow: 0 8px 30px #0008; }
+.toast > svg { flex: 0 0 auto; color: #00dba1; }
+.toast button { display: grid; flex: 0 0 auto; place-items: center; padding: 3px; border: 0; background: transparent; color: #a9b0bd; }
 .header { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 29px 35px; border-bottom: 1px solid #232838; }
 .header h2 { display: flex; align-items: center; gap: 15px; margin: 0; font-size: 26px; font-weight: 700; }
 .header h2 svg { color: #9259ff; flex-shrink: 0; }
 .header > button { display: grid; place-items: center; flex-shrink: 0; width: 40px; height: 40px; padding: 0; border: 1px solid #232838; border-radius: 50%; background: #050608; color: #858d9a; }
 .body { padding: 44px; }
+.planSummary { display: flex; justify-content: space-between; gap: 20px; padding: 0 0 30px; border-bottom: 1px solid #232838; }
+.planSummary > div { display: grid; align-content: start; gap: 10px; }
+.planSummary > div:last-child { text-align: right; }
+.planSummary span { color: #858d9a; text-transform: uppercase; letter-spacing: 1px; font-size: 14px; }
+.planSummary strong { color: #f5f5f8; font-size: 23px; }
+.planSummary > div:last-child strong { color: #00dba1; font-size: 28px; }
 .amountLabel { display: block; margin-bottom: 13px; color: #858d9a; text-transform: uppercase; font-size: 16px; letter-spacing: 1px; }
 .amount { display: flex; align-items: center; gap: 11px; padding: 19px 22px; border: 1px solid #232838; border-radius: 17px; background: #090c10; }
 .amount > span { color: #00dba1; font-size: 24px; font-weight: 700; }
@@ -29,4 +38,4 @@
 .confirm:disabled { opacity: .5; }
 .status { color: #a9b0bd; font-size: 14px; line-height: 1.6; }
 .footnote { margin: 22px 0 0; color: #858d9a; font-size: 12px; line-height: 1.6; text-align: center; }
-@media (max-width: 600px) { .modal { border-radius: 23px; } .header { padding: 22px; } .header h2 { font-size: 21px; gap: 10px; } .body { padding: 26px 22px; } .amountLabel { font-size: 13px; } .options { grid-template-columns: repeat(2, minmax(0, 1fr)); } .destination { padding: 16px; } .walletAddress code { padding: 14px; font-size: 12px; } .walletAddress button { padding-inline: 15px; } .confirm { font-size: 17px; min-height: 60px; } }
+@media (max-width: 600px) { .modal { border-radius: 23px; } .header { padding: 22px; } .header h2 { font-size: 21px; gap: 10px; } .body { padding: 26px 22px; } .amountLabel { font-size: 13px; } .planSummary strong { font-size: 19px; } .planSummary > div:last-child strong { font-size: 23px; } .planSummary span { font-size: 11px; } .options { grid-template-columns: repeat(2, minmax(0, 1fr)); } .destination { padding: 16px; } .walletAddress code { padding: 14px; font-size: 12px; } .walletAddress button { padding-inline: 15px; } .confirm { font-size: 17px; min-height: 60px; } }

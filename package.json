@@ -14,6 +14,7 @@
     "test": "node --test tests/unit/*.test.js",
     "test:auth": "node --test tests/integration/auth.test.js",
     "seed:admin": "node scripts/seed-admin.js",
+    "seed:traders": "node scripts/seed-traders.js",
     "migrate:wallets": "node scripts/migrate-wallet-fields.js",
     "check": "npm run lint && npm run test && npm run build"
   },

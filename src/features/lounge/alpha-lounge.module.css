@@ -1,0 +1,59 @@
+.page { width: 100%; max-width: 1100px; margin: 0 auto; padding: 35px clamp(16px, 3vw, 40px) 56px; }
+.leaderboard { overflow: hidden; border: 1px solid #20242d; border-radius: 20px; background: #090a0d; }
+.heading { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 26px 28px 23px; }
+.heading h1 { margin: 4px 0 5px; color: #f5f5f8; font-size: 26px; letter-spacing: -.5px; }
+.heading p { margin: 0; color: #878d99; font-size: 14px; }
+.eyebrow { color: #00dea4; font-size: 11px; font-weight: 700; letter-spacing: 1.7px; text-transform: uppercase; }
+.refresh { display: flex; align-items: center; gap: 8px; padding: 9px 12px; border: 1px solid #242936; border-radius: 10px; background: #11141b; color: #b6bdc9; font-size: 13px; }
+.refresh:disabled { opacity: .5; }
+.tabs { display: flex; gap: 26px; min-height: 51px; padding: 0 28px; border-top: 1px solid #181b22; border-bottom: 1px solid #20242d; }
+.tabs button { position: relative; border: 0; background: transparent; color: #8b909b; font-size: 14px; }
+.tabs button[aria-current="page"] { color: #f5f5f8; font-weight: 600; }
+.tabs button[aria-current="page"]::after { position: absolute; right: 0; bottom: -1px; left: 0; height: 2px; background: #f5f5f8; content: ""; }
+.tabs button:disabled { opacity: .75; cursor: not-allowed; }
+.viewerRank { position: sticky; top: 0; z-index: 1; display: flex; align-items: center; gap: 10px; min-height: 48px; padding: 6px 22px; border-bottom: 1px solid #242731; background: #1b1c20; }
+.viewerAvatar { display: grid; place-items: center; width: 28px; height: 28px; border: 1px solid #5d6571; border-radius: 50%; background: #2c3038; color: white; font-size: 12px; font-weight: 700; }
+.you { margin-left: -23px; transform: translateY(15px); padding: 2px 6px; border: 1px solid #606774; border-radius: 9px; background: #111319; color: white; font-size: 9px; font-weight: 700; }
+.rankLabel { margin-left: 5px; color: #a1a5ad; font-size: 12px; }
+.rankLabel strong { margin-left: 4px; color: #00dea4; }
+.viewerProfit { margin-left: auto; color: #9298a5; font-size: 13px; font-weight: 600; }
+.listHeader { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 20px 24px 4px; }
+.listHeader h2 { margin: 0; font-size: 15px; font-weight: 650; }
+.listHeader span { color: #707681; font-size: 11px; }
+.traders { display: grid; gap: 0; margin: 0; padding: 0 8px; list-style: none; }
+.row { display: grid; grid-template-columns: 24px 48px minmax(90px, 1fr) auto 44px; align-items: center; gap: 12px; min-height: 86px; padding: 10px 16px; border-bottom: 1px solid #15171c; }
+.row:last-child { border-bottom: 0; }
+.rank { color: #a1a5ad; font-size: 12px; font-weight: 600; }
+.rank1 { color: #ffd44a; }
+.rank2 { color: #c7cbd2; }
+.rank3 { color: #d99358; }
+.avatar { display: grid; place-items: center; width: 44px; height: 44px; overflow: hidden; border: 1px solid #252a33; border-radius: 50%; background: radial-gradient(circle at 30% 20%, #2a555b, #122127 60%, #0b0c10); color: #b7f5e5; font-size: 17px; font-weight: 700; }
+.avatar img { width: 100%; height: 100%; object-fit: cover; }
+.traderInfo { min-width: 0; }
+.name { display: flex; align-items: center; gap: 7px; overflow: hidden; color: #e6e7eb; font-size: 13px; font-weight: 650; text-overflow: ellipsis; white-space: nowrap; }
+.name svg { flex-shrink: 0; color: #f4ce4d; }
+.follow { margin-top: 5px; padding: 5px 10px; border: 1px solid #282b32; border-radius: 15px; background: #181a1e; color: #d4d6dc; font-size: 11px; }
+.follow[aria-pressed="true"] { border-color: #075b46; background: #0b2b24; color: #00dea4; }
+.follow:disabled { opacity: .5; cursor: default; }
+.profit { color: #75d6a0; font-size: 14px; font-weight: 700; text-align: right; white-space: nowrap; }
+.followers { justify-self: end; display: grid; place-items: center; min-width: 28px; height: 24px; padding: 0 5px; border: 1px solid #262930; border-radius: 14px; background: #202229; color: #b3b7bf; font-size: 10px; }
+.state { display: flex; min-height: 240px; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 24px; color: #858d9a; text-align: center; }
+.state p { margin: 0; }
+.state button { padding: 9px 14px; border: 1px solid #303747; border-radius: 9px; background: #151821; color: white; }
+.disclaimer { margin: 0; padding: 15px 24px; border-top: 1px solid #171a20; color: #666d79; font-size: 10px; }
+@media (max-width: 560px) {
+  .page { padding: 14px 8px 28px; }
+  .leaderboard { border-right: 0; border-left: 0; border-radius: 0; }
+  .heading { padding: 20px 17px; }
+  .heading h1 { font-size: 22px; }
+  .heading p { font-size: 12px; }
+  .tabs { gap: 21px; padding-inline: 17px; overflow-x: auto; }
+  .tabs button { flex: 0 0 auto; font-size: 13px; }
+  .viewerRank { padding-inline: 14px; }
+  .listHeader { padding-inline: 17px; }
+  .row { grid-template-columns: 18px 42px minmax(72px, 1fr) auto; gap: 9px; min-height: 78px; padding: 8px 10px; }
+  .avatar { width: 40px; height: 40px; }
+  .name { max-width: 100%; font-size: 12px; }
+  .profit { font-size: 13px; }
+  .followers { display: none; }
+}

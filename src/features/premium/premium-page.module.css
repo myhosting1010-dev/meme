@@ -1,0 +1,41 @@
+.page { max-width: 1760px; margin: 0 auto; padding: 56px clamp(22px, 3vw, 54px) 72px; }
+.topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; }
+.back, .topCta { display: inline-flex; align-items: center; gap: 11px; text-decoration: none; }
+.back { padding: 14px 17px; border: 1px solid #232838; border-radius: 11px; background: #101119; color: #9299a7; font-size: 18px; }
+.back:hover { color: white; }
+.topCta { padding: 11px 19px; border: 1px solid #422668; border-radius: 28px; background: #171222; color: #a06bff; text-transform: uppercase; letter-spacing: .7px; font-size: 15px; font-weight: 700; }
+.hero { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 32px; min-height: 410px; padding: 60px clamp(32px, 5vw, 68px); overflow: hidden; border: 1px solid #302443; border-radius: 32px; background: radial-gradient(ellipse at 25% 6%, #21192e 0, #11111a 52%, #0a0b10 100%); }
+.heroCopy { position: relative; z-index: 1; }
+.hero h1 { margin: 0 0 38px; font-size: clamp(42px, 4vw, 58px); line-height: 1.08; letter-spacing: -2px; font-weight: 800; }
+.hero h1 span { color: #00dea4; text-shadow: 0 8px 28px #00dea440; }
+.proof { display: flex; flex-wrap: wrap; gap: 12px; }
+.proof span { display: inline-flex; align-items: center; gap: 12px; padding: 15px 19px; border: 1px solid #07513e; border-radius: 30px; background: #0d2824; color: #f3f8fa; font-size: 16px; font-weight: 600; white-space: nowrap; }
+.proof svg { color: #00dea4; }
+.chart { width: min(36%, 390px); min-width: 240px; overflow: visible; filter: drop-shadow(0 0 20px #00dea41c); }
+.chartBase { fill: none; stroke: #222532; stroke-width: 1; }
+.chartGuide { fill: none; stroke: #00dea4; stroke-width: 1.5; stroke-dasharray: 5 6; }
+.gem { fill: #00dea4; }
+.candleUp { fill: #00d7a1; stroke: #00d7a1; stroke-width: 2; }
+.candleDown { fill: #f04b55; stroke: #f04b55; stroke-width: 2; }
+.plans { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; margin-top: 108px; }
+.plan { position: relative; display: flex; flex-direction: column; min-width: 0; min-height: 630px; padding: 44px 28px 26px; border: 1px solid #232838; border-radius: 28px; background: linear-gradient(160deg, #11131b, #0c0e14); }
+.popular { border: 2px solid #9259ff; background: radial-gradient(ellipse at top, #21172e, #11111a 54%, #0c0e14); box-shadow: 0 0 36px #8b55f62b; }
+.popularBadge { position: absolute; top: -19px; left: 50%; transform: translateX(-50%); padding: 10px 22px; border-radius: 25px; background: linear-gradient(100deg, #9259ff, #b348ed); color: white; white-space: nowrap; text-transform: uppercase; letter-spacing: 1px; font-size: 12px; font-weight: 800; box-shadow: 0 5px 25px #8b55f655; }
+.saving { margin: 0 0 18px; color: #00e9aa; text-align: center; text-transform: uppercase; letter-spacing: 1.5px; font-size: 14px; font-weight: 800; }
+.starter { color: #9299a7; }
+.gold { color: #ffc400; }
+.plan h2 { margin: 0 0 32px; text-align: center; font-size: 24px; }
+.price { margin: 0; font-size: clamp(35px, 3vw, 49px); font-weight: 800; letter-spacing: -1.5px; white-space: nowrap; }
+.price span { margin-left: 5px; color: #858d9a; font-size: 14px; font-weight: 500; letter-spacing: 0; }
+.total { margin: 17px auto 0; width: min(100%, 220px); padding: 13px 12px; border: 1px solid #232838; border-radius: 15px; background: #050506; color: #9299a7; text-align: center; font-weight: 600; }
+.plan ul { display: grid; align-content: start; gap: 17px; margin: 31px 0 28px; padding: 27px 0 0; border-top: 1px solid #171a24; list-style: none; }
+.plan li { display: flex; align-items: flex-start; gap: 13px; color: #c4c8d0; line-height: 1.45; }
+.plan li svg { flex: 0 0 auto; margin-top: 2px; color: #00dea4; stroke-width: 3; }
+.choose { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 48px; margin-top: auto; border: 1px solid #283040; border-radius: 12px; background: #171a23; color: white; font-weight: 700; }
+.choose:hover { border-color: #00dea4; color: #00dea4; }
+.popular .choose { border-color: #9259ff; background: #9259ff; color: white; }
+.popular .choose:hover { background: #a46cff; }
+.notice { position: fixed; right: 24px; bottom: 24px; z-index: 25; max-width: min(400px, calc(100vw - 48px)); padding: 16px 20px; border: 1px solid #232838; border-radius: 14px; background: #101119; color: white; box-shadow: 0 8px 30px #0008; }
+@media (max-width: 1150px) { .plans { gap: 16px; } .plan { padding-inline: 20px; } .price { font-size: clamp(31px, 3.6vw, 42px); } .hero { min-height: 350px; } }
+@media (max-width: 850px) { .page { padding: 30px 22px 50px; } .plans { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 70px; } .plan { min-height: 590px; } .hero { min-height: 330px; padding: 45px 32px; } .hero h1 { font-size: 44px; } .chart { min-width: 190px; } }
+@media (max-width: 580px) { .page { padding: 22px 16px 40px; } .topbar { margin-bottom: 22px; } .back { padding: 11px 12px; font-size: 14px; } .topCta { padding: 10px 13px; font-size: 12px; } .hero { min-height: 0; flex-direction: column; align-items: flex-start; padding: 34px 22px 20px; border-radius: 24px; } .hero h1 { margin-bottom: 25px; font-size: 40px; } .proof { gap: 8px; } .proof span { padding: 10px 12px; font-size: 12px; } .chart { align-self: center; width: 85%; min-width: 0; max-height: 190px; } .plans { grid-template-columns: 1fr; gap: 28px; margin-top: 58px; } .plan { min-height: 0; padding: 35px 24px 22px; } .price { font-size: 44px; } }

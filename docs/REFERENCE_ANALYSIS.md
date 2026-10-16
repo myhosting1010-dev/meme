@@ -23,7 +23,7 @@ PARTIALLY VERIFIED page: coin-list first page, implemented locally at `/` (refer
 
 PROPOSED Phase 2 adaptations within authorized frontend scope: local name/symbol search, illustrative sort ranks, accessible mobile drawer and stacked mobile cards, loading skeleton and empty state. Use original Mintline branding and generated-in-code avatar treatments. Demo indicator replaces the live-system claim. Unverified sidebar destinations are disabled rather than assigned invented routes.
 
-No wallet, trading execution, AI capability, premium checkout or authenticated page is implemented. Desktop visual comparison remains manual: there is still no connected browser in this session.
+No trading execution or AI capability is implemented. Premium checkout can record pending plan payments; payment approval and plan activation remain unavailable. Desktop visual comparison remains manual: there is still no connected browser in this session.
 
 The following original Phase 0 tables are retained as historical pre-screenshot records; the evidence above supersedes their NOT ACCESSIBLE designation for visible desktop elements only.
 
