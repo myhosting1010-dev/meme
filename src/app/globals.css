@@ -37,8 +37,8 @@ button:disabled { cursor: not-allowed; }
 .desktop-sidebar { position: fixed; inset: 0 auto 0 0; width: var(--sidebar-width); z-index: 20; }
 .sidebar { height: 100%; background: #090b0f; border-right: 1px solid var(--border); overflow-y: auto; }
 .brand-row { height: 90px; display: flex; align-items: center; justify-content: space-between; padding: 0 25px 0 32px; border-bottom: 1px solid #171922; }
-.brand { display: flex; align-items: center; gap: 23px; font-size: 25px; font-weight: 750; color: var(--foreground); text-decoration: none; }
-.brand-gem { display: inline-block; width: 20px; height: 29px; background: linear-gradient(to bottom, #00edbc 36%, #061b18 37%, #061b18 43%, #00d7a1 44%); clip-path: polygon(50% 0, 100% 38%, 50% 100%, 0 38%); filter: drop-shadow(0 0 10px #00dea440); flex-shrink: 0; }
+.brand { display: flex; align-items: center; gap: 23px; color: var(--foreground); text-decoration: none; }
+.brand-logo { display: block; width: 150px; max-height: 76px; object-fit: contain; flex-shrink: 0; }
 .icon-button { display: grid; place-items: center; width: 34px; height: 34px; border: 1px solid var(--border); border-radius: 6px; background: #0d1016; color: var(--muted); }
 .sidebar-content { padding: 19px 15px 24px; }
 .nav-item { width: 100%; display: flex; align-items: center; gap: 16px; min-height: 51px; padding: 10px 15px; color: var(--muted); border: 1px solid transparent; border-radius: 10px; font-size: 18px; text-align: left; background: transparent; text-decoration: none; white-space: nowrap; }
@@ -67,6 +67,7 @@ button:disabled { cursor: not-allowed; }
 .sidebar-user small i { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
 .sidebar--collapsed .brand-row { padding: 0 12px; flex-direction: column; justify-content: center; gap: 9px; }
 .sidebar--collapsed .brand-name, .sidebar--collapsed .nav-item span, .sidebar--collapsed .nav-group { display: none; }
+.sidebar--collapsed .brand-logo { width: 54px; }
 .sidebar--collapsed .sidebar-content { padding: 20px 10px; }
 .sidebar--collapsed .nav-item { justify-content: center; padding: 10px; }
 .app-main { margin-left: var(--sidebar-width); min-width: 0; }
@@ -88,6 +89,10 @@ button:disabled { cursor: not-allowed; }
 .coin-search:focus-within { outline: 2px solid var(--accent); outline-offset: 3px; }
 .coin-search input::-webkit-search-cancel-button { display: none; }
 .coin-search button { padding: 4px; background: transparent; color: var(--muted); border: 0; display: grid; place-items: center; }
+.coin-toolbar-actions { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+.coin-toolbar-actions .coin-search { margin-left: 0; }
+.make-deposit-button { height: 43px; padding: 0 17px; border: 1px solid var(--accent); border-radius: 24px; background: var(--accent); color: #04120f; font-weight: 700; white-space: nowrap; cursor: pointer; }
+.make-deposit-button:hover { filter: brightness(1.08); }
 .system-status { display: flex; align-items: center; gap: 9px; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; font-size: 11px; font-weight: 700; white-space: nowrap; }
 .system-status i { width: 11px; height: 11px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px #00dea435; }
 .system-status--offline { color: #ff6269; }
@@ -163,7 +168,8 @@ button:disabled { cursor: not-allowed; }
 }
 @media (max-width: 1200px) {
   .coin-toolbar { height: auto; min-height: 90px; flex-wrap: wrap; padding-block: 16px; }
-  .coin-search { order: 3; width: 100%; }
+  .coin-toolbar-actions { order: 3; width: 100%; }
+  .coin-toolbar-actions .coin-search { width: auto; flex: 1; }
   .system-status { margin-left: auto; }
   .coin-card { grid-template-columns: minmax(160px, 1.6fr) 1fr 1fr .75fr .65fr; }
   .sparkline { grid-column: 1 / -1; justify-self: end; width: 130px; height: 35px; }
@@ -172,7 +178,8 @@ button:disabled { cursor: not-allowed; }
   .desktop-sidebar { display: none; }
   .app-main { margin-left: 0; }
   .mobile-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; border-bottom: 1px solid var(--border); background: #090b0f; }
-  .coin-search { order: initial; width: 220px; }
+  .coin-toolbar-actions { order: initial; width: auto; }
+  .coin-toolbar-actions .coin-search { width: 220px; flex: initial; }
   .coin-card { grid-template-columns: minmax(180px, 1.5fr) 1fr 1fr .7fr .6fr; }
 }
 @media (max-width: 650px) {
@@ -180,7 +187,9 @@ button:disabled { cursor: not-allowed; }
   .coin-toolbar { gap: 12px; padding: 16px; }
   .sort-controls { overflow-x: auto; width: calc(100% - 50px); gap: 2px; }
   .button--tab { padding: 11px 13px; font-size: 13px; }
-  .coin-search { width: calc(100% - 116px); min-width: 0; margin-left: 0; }
+  .coin-toolbar-actions { width: 100%; }
+  .coin-toolbar-actions .coin-search { width: auto; min-width: 0; flex: 1; }
+  .make-deposit-button { padding-inline: 13px; }
   .system-status { font-size: 9px; letter-spacing: 1px; }
   .coin-content { padding: 20px 16px; }
   .coin-list { gap: 14px; }

@@ -99,7 +99,7 @@ export function AuthProvider({ children }) {
       {toast && <div className={styles.toast} role="alert"><CircleAlert size={23} aria-hidden="true" />{toast}</div>}
       <div className={styles.content}>
         <button className={styles.close} type="button" disabled={busy} aria-label="Close sign in" onClick={() => dialog.current.close()}><X size={21} /></button>
-        <h2 id="auth-title" className={styles.brand}><span className="brand-gem" aria-hidden="true" />{site.name} Pro</h2>
+        <h2 id="auth-title" className={styles.brand}><img className={styles.brandLogo} src="/trenchfun-logo.png" alt={`${site.name} Pro`} /></h2>
         <div className={styles.tabs} role="group" aria-label="Account action"><button type="button" disabled={busy} aria-pressed={!signup} onClick={() => { setMode("signin"); setError(""); }}>Sign In</button><button type="button" disabled={busy} aria-pressed={signup} onClick={() => { setMode("signup"); setError(""); }}>Sign Up</button></div>
         <form key={mode} className={`${styles.form} ${signup ? styles.signup : ""}`} onSubmit={submit}>
           {signup && <><label>Username<input name="username" placeholder="Enter username" autoComplete="username" minLength={3} maxLength={30} pattern="[a-zA-Z0-9_]+" required disabled={busy} /></label><label>X (Twitter) username <span>(Optional)</span><input name="twitterUsername" placeholder="@username" maxLength={16} pattern="@?[a-zA-Z0-9_]+" disabled={busy} /></label></>}

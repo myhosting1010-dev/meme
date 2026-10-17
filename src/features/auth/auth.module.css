@@ -3,7 +3,8 @@
 .modal::backdrop { background: #000b; backdrop-filter: blur(6px); }
 .content { position: relative; padding: 46px 44px 44px; }
 .close { position: absolute; top: 22px; right: 22px; display: grid; place-items: center; width: 40px; height: 40px; border: 1px solid #252b39; border-radius: 50%; background: #050608; color: #838c9a; }
-.brand { display: flex; align-items: center; justify-content: center; gap: 19px; margin: 0 0 36px; font-size: 29px; font-weight: 750; letter-spacing: .5px; }
+.brand { display: flex; align-items: center; justify-content: center; margin: 0 0 36px; }
+.brandLogo { display: block; width: 220px; max-width: 75%; max-height: 90px; object-fit: contain; }
 .tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; padding: 6px; border: 1px solid #252b39; border-radius: 17px; background: #050505; }
 .tabs button { padding: 13px; border: 0; border-radius: 12px; background: transparent; color: #858d99; font-size: 19px; }
 .tabs button[aria-pressed="true"] { background: #101119; color: white; }
@@ -26,7 +27,7 @@
 .toast svg { color: #ff343e; flex-shrink: 0; }
 @media (max-width: 600px) {
   .content { padding: 48px 24px 28px; }
-  .brand { font-size: 25px; gap: 14px; }
+  .brandLogo { width: 190px; }
   .close { top: 12px; right: 12px; width: 32px; height: 32px; }
   .form { margin-top: 32px; gap: 21px; }
   .formOptions { font-size: 13px; }

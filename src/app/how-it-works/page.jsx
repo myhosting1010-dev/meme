@@ -22,7 +22,7 @@ export default function HowItWorks() {
     <div className={styles.page}>
       <a href="#how-it-works" className="skip-link">Skip to contents</a>
       <header className={styles.header}>
-        <a href={samePage} className={styles.brand}><span className="brand-gem" aria-hidden="true" />{site.name}</a>
+        <a href={samePage} className={styles.brand}><img className={styles.brandLogo} src="/trenchfun-logo.png" alt={site.name} /></a>
         <nav className={styles.navigation} aria-label="How it works navigation">
           <a href={samePage} className={styles.trending}>Trending</a>
           <a href={samePage} className={styles.active}>Results</a>

@@ -100,7 +100,7 @@ export async function searchCoins(query, fetcher = fetch) {
   if (!response.ok) throw new Error("Coin search unavailable");
   const data = await response.json();
   if (!Array.isArray(data.pairs)) throw new Error("Invalid coin search response");
-  return { coins: normalizePairs(data.pairs.slice(0, 100)), source: "DEX Screener", fetchedAt: new Date().toISOString(), partial: false };
+  return { coins: normalizePairs(data.pairs.slice(0, 100)), source: " source", fetchedAt: new Date().toISOString(), partial: false };
 }
 
 export async function fetchCoinFeed(fetcher = fetch) {
@@ -131,7 +131,7 @@ export async function fetchCoinFeed(fetcher = fetch) {
   if (results.length && results.every((result) => result.status === "rejected")) throw new Error("Coin provider unavailable");
   return {
     coins: normalizePairs(results.flatMap((result) => result.status === "fulfilled" ? result.value : []), profiles),
-    source: "DEX Screener", fetchedAt: new Date().toISOString(),
+    source: "source", fetchedAt: new Date().toISOString(),
     partial: results.some((result) => result.status === "rejected"),
   };
 }

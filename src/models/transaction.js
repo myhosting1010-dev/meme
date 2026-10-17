@@ -13,7 +13,7 @@ const transactionSchema = new mongoose.Schema({
   walletName: { type: String, trim: true, maxlength: 100, immutable: true },
   walletAddress: { type: String, immutable: true },
   description: { type: String, trim: true, maxlength: 120, default: "" },
-  status: { type: String, enum: ["pending", "completed", "failed", "cancelled"], default: "pending", required: true },
+  status: { type: String, enum: ["pending", "processing", "completed", "failed", "cancelled"], default: "pending", required: true },
 }, { timestamps: true, strict: "throw" });
 transactionSchema.index({ reference: 1 }, { unique: true });
 transactionSchema.index({ userId: 1, createdAt: -1, _id: -1 });

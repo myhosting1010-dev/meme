@@ -17,6 +17,7 @@ test("transactions validate money, ownership, payment method, and lifecycle stat
   await transaction.validate();
   assert.equal(transaction.cryptoMethod, "SOL");
   assert.equal(transaction.status, "pending");
+  await new Transaction({ ...values, status: "processing" }).validate();
   assert.equal(transaction.currency, "USD");
   assert.notEqual(transaction.reference, new Transaction(values).reference);
   for (const invalid of [{ amount: -1 }, { amount: 1.5 }, { amount: 0 }, { amount: Number.MAX_SAFE_INTEGER + 1 }, { userId: null }, { type: "credit-anything" }, { status: "approved" }, { cryptoMethod: "unknown" }]) {

@@ -61,9 +61,9 @@ export function CoinDetail({ chain, pair }) {
       </header>
       {buyMessage && <p className="detail-note" role="status">{buyMessage}</p>}
       {error && <div className="feed-error" role="alert"><p>{error}{coin && " Showing the last successful update."}</p><Button onClick={() => setRetry((value) => value + 1)}>Retry</Button></div>}
-      <div className="detail-chart-label"><span className="system-status"><i />{coin?.symbol ?? chain} chart &amp; trades</span><a href={sourceUrl} target="_blank" rel="noopener noreferrer">Open on DEX Screener <ExternalLink size={14} /></a></div>
-      <iframe key={`${chain}:${pair}`} className="detail-chart" src={coinPairUrl(chain, pair, true)} title="DEX Screener price chart and trade feed" referrerPolicy="no-referrer" sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox" />
-      <p className="detail-note">Chart and trade feed supplied by DEX Screener. Market metrics refresh every 30 seconds. Peak multiplier is unavailable. If the embed cannot load, use the source link above.</p>
+     
+      <iframe key={`${chain}:${pair}`} className="detail-chart" src={coinPairUrl(chain, pair, true)} title="Price chart and trade feed" referrerPolicy="no-referrer" sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox" />
+     
     </div>
   );
 }

@@ -9,7 +9,7 @@ import styles from "./deposit-modal.module.css";
 const networks = { SOL: "Solana Network", BTC: "Bitcoin Network", ETH: "Ethereum Network", XRP: "XRP Ledger" };
 const planNetworks = ["SOL", "BTC", "ETH", "XRP"];
 
-export function DepositModal({ onDeposited, onPlanSubmitted, plan = null, openOnMount = false, onDismiss }) {
+export function DepositModal({ onDeposited, onPlanSubmitted, plan = null, openOnMount = false, onDismiss, triggerLabel = "Deposit", triggerClassName = "" }) {
   const dialog = useRef(null);
   const request = useRef(null);
   const copyVersion = useRef(0);
@@ -115,7 +115,7 @@ export function DepositModal({ onDeposited, onPlanSubmitted, plan = null, openOn
   }
 
   return <>
-    {!plan && <button type="button" onClick={open}>Deposit</button>}
+    {!plan && <button type="button" className={triggerClassName} onClick={open}>{triggerLabel}</button>}
     {portalTarget && createPortal(<dialog ref={dialog} className={styles.modal} aria-labelledby="deposit-title" onClose={close} onCancel={(event) => { if (submitting) event.preventDefault(); }} onClick={(event) => { if (event.target === event.currentTarget && !submitting) dialog.current.close(); }}>
       {toast && <div className={styles.toast} role="status"><CircleCheck size={20} aria-hidden="true" /><span>{toast}</span><button type="button" aria-label="Dismiss notification" onClick={() => setToast("")}><X size={17} /></button></div>}
       <header className={styles.header}><h2 id="deposit-title"><Star size={25} fill="currentColor" aria-hidden="true" />Complete Checkout</h2><button type="button" aria-label="Close payment" disabled={submitting} onClick={() => dialog.current.close()}><X size={21} /></button></header>

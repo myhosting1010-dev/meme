@@ -36,6 +36,7 @@ export async function POST(request, { params }) {
   const requestUrl = new URL(request.url);
   const expectedOrigin = `${requestUrl.protocol}//${request.headers.get("host") ?? requestUrl.host}`;
   if (request.headers.get("origin") !== expectedOrigin) return json({ error: "Invalid request origin." }, 403);
+  let signupData = null;
   try {
     if (action === "signout") {
       const cookieStore = await cookies();
@@ -49,6 +50,7 @@ export async function POST(request, { params }) {
     const parsed = (action === "signup" ? signupSchema : signinSchema).safeParse(body);
     if (!parsed.success) return json({ error: parsed.error.issues[0].message }, 400);
     const data = parsed.data;
+    if (action === "signup") signupData = data;
     await authDatabase();
     const window = Math.floor(Date.now() / 900000);
     const key = digest(`${action}:${data.email}:${window}`);
@@ -62,6 +64,11 @@ export async function POST(request, { params }) {
     if (attempt.count > 10) return json({ error: "Too many attempts. Please try again in 15 minutes." }, 429);
     let user;
     if (action === "signup") {
+      const [emailExists, usernameExists] = await Promise.all([
+        User.exists({ email: data.email }),
+        User.exists({ usernameKey: data.username.toLowerCase() }),
+      ]);
+      if (emailExists || usernameExists) return json({ error: signupConflict(Boolean(emailExists), Boolean(usernameExists)) }, 409);
       user = await User.create({ username: data.username, email: data.email, twitterUsername: data.twitterUsername, passwordHash: await hashPassword(data.password) });
     } else {
       user = await User.findOne({ email: data.email }).select("+passwordHash");
@@ -73,7 +80,18 @@ export async function POST(request, { params }) {
     await createSession(user._id, action === "signin" && data.remember);
     return json({ user: publicUser(user) }, action === "signup" ? 201 : 200);
   } catch (error) {
-    if (error.code === 11000) return json({ error: "That email or username is already in use." }, 409);
+    if (error.code === 11000 && action === "signup") {
+      const [emailExists, usernameExists] = signupData ? await Promise.all([User.exists({ email: signupData.email }), User.exists({ usernameKey: signupData.username.toLowerCase() })]) : [false, false];
+      return json({ error: signupConflict(Boolean(emailExists), Boolean(usernameExists)) }, 409);
+    }
+    if (error.code === 11000) return json({ error: "Please try again shortly." }, 429);
     return json({ error: "Account service is temporarily unavailable. Please try again." }, 503);
   }
+}
+
+function signupConflict(emailExists, usernameExists) {
+  if (emailExists && usernameExists) return "That email and username are already registered.";
+  if (emailExists) return "That email is already registered.";
+  if (usernameExists) return "That username is already taken.";
+  return "That email or username is already in use.";
 }

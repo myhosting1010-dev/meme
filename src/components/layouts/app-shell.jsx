@@ -16,7 +16,7 @@ export function AppShell({ children }) {
     <div className={`app-shell ${collapsed ? "app-shell--collapsed" : ""}`}>
       <a href="#main-content" className="skip-link">Skip to content</a>
       <div className="desktop-sidebar"><Sidebar collapsed={collapsed} onToggle={() => setCollapsed(!collapsed)} /></div>
-      <header className="mobile-header"><span className="brand"><span className="brand-gem" aria-hidden="true" />{site.name}</span><button className="icon-button" aria-label="Open navigation" onClick={() => menu.current?.showModal()}><Menu size={22} /></button></header>
+      <header className="mobile-header"><span className="brand"><img className="brand-logo" src="/trenchfun-logo.png" alt={site.name} /></span><button className="icon-button" aria-label="Open navigation" onClick={() => menu.current?.showModal()}><Menu size={22} /></button></header>
       <dialog ref={menu} className="mobile-menu" aria-label="Navigation menu"><Sidebar mobile onToggle={closeMenu} onNavigate={closeMenu} /></dialog>
       <main id="main-content" tabIndex={-1} className="app-main">{children}</main>
     </div>

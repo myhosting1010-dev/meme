@@ -8,6 +8,8 @@ const userSchema = new mongoose.Schema({
   passwordHash: { type: String, required: true, select: false, match: /^scrypt\$[a-f0-9]{32}\$[a-f0-9]{128}$/ },
   // USD cents: integer storage avoids floating-point errors for account balances.
   balance: { type: Number, default: 0, required: true, min: 0, max: Number.MAX_SAFE_INTEGER, validate: Number.isSafeInteger },
+  // Used to make standalone-MongoDB settlement retries idempotent when transactions are unavailable.
+  settledTransactionIds: { type: [mongoose.Schema.Types.ObjectId], default: [], select: false },
   membershipPlan: { type: String, enum: ["free", "premium"], default: "free", required: true },
   role: { type: String, enum: ["user", "admin"], default: "user", required: true },
 }, { timestamps: true, strict: "throw" });

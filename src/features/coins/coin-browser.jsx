@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Flame, Info, SearchX } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SearchInput } from "@/components/ui/search-input";
+import { DepositModal } from "@/features/account/deposit-modal";
 import { CoinCard } from "@/features/coins/coin-card";
 import { CoinListSkeleton } from "@/features/coins/coin-list-skeleton";
 import { selectCoins, sortOptions } from "@/features/coins/select-coins";
@@ -43,7 +44,10 @@ export function CoinBrowser() {
       <header className="coin-toolbar">
         <details className="list-info"><summary aria-label="About this coin list"><Info size={17} /></summary><div className="info-popover">Search  by coin name, symbol, or contract address. Without a search, shows latest-profile tokens. Each token uses its most liquid returned pair. Sorts apply to returned results; Trending uses 24-hour trades and Newest uses pair creation time. Refreshes every minute. Missing values display —.</div></details>
         <div className="sort-controls" role="group" aria-label="Sort coins">{sortOptions.map((option) => <Button key={option.id} variant="tab" aria-pressed={sort === option.id} onClick={() => setSort(option.id)}>{option.id === "trending" && <Flame size={16} className="flame-icon" aria-hidden="true" />}{option.label}</Button>)}</div>
-        <SearchInput value={query} onChange={setQuery} />
+        <div className="coin-toolbar-actions">
+          <SearchInput value={query} onChange={setQuery} />
+          <DepositModal triggerLabel="Make deposit" triggerClassName="make-deposit-button" />
+        </div>
         {/* <span className={`system-status ${error ? "system-status--offline" : ""}`}><i aria-hidden="true" />{error ? "Feed offline" : feed ? "API data" : "Loading"}</span> */}
       </header>
       <section className="coin-content" aria-labelledby="coin-list-title">
