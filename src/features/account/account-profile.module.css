@@ -3,7 +3,8 @@
 .header h1 { margin: 0; font-size: 34px; font-weight: 750; letter-spacing: -1px; }
 .back { display: inline-flex; align-items: center; gap: 12px; padding: 14px 17px; border: 1px solid #232838; border-radius: 11px; background: #101119; color: #858d9a; font-size: 19px; text-decoration: none; }
 .back:hover { color: white; }
-.cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
+.cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; gap: 22px; }
+.balanceSidebar { display: grid; gap: 14px; min-width: 0; }
 .card { position: relative; min-height: 215px; padding: 32px; border: 1px solid #232838; border-radius: 23px; background: #101119; }
 .card h2 { margin: 0 0 10px; font-size: 16px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; color: #858d9a; }
 .identity { display: flex; align-items: center; gap: 21px; }

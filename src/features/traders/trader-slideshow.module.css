@@ -1,0 +1,21 @@
+.panel { min-width: 0; overflow: hidden; padding: 16px 12px 12px; border: 1px solid #232838; border-radius: 18px; background: #090910; }
+.header { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; }
+.header h2 { display: flex; align-items: center; gap: 7px; margin: 0; color: #e8e9ef; font-size: 13px; font-weight: 600; }
+.header h2 svg { color: #9299a7; }
+.controls { display: flex; gap: 2px; }
+.controls button { display: grid; place-items: center; width: 24px; height: 24px; border: 1px solid #242632; border-radius: 6px; background: #13141d; color: #a6adba; }
+.controls button:hover { color: #00dba1; border-color: #00dba1; }
+.track { display: flex; gap: 8px; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: none; margin: 0; padding: 0 0 4px; list-style: none; }
+.track::-webkit-scrollbar { display: none; }
+.slide { flex: 0 0 154px; min-width: 0; scroll-snap-align: start; overflow: hidden; border: 1px solid #1b1d29; border-radius: 13px; background: #0b0a12; }
+.name { display: flex; align-items: center; gap: 7px; padding: 9px 8px; background: #14131e; color: #e4e5ed; font-size: 12px; }
+.name > span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.avatar { display: grid; place-items: center; flex-shrink: 0; width: 21px; height: 21px; overflow: hidden; border-radius: 50%; background: #133d36; color: #00dba1; font-size: 10px; }
+.avatar img { width: 100%; height: 100%; object-fit: cover; }
+.result { display: flex; align-items: center; gap: 7px; padding: 13px 8px; }
+.rank { display: grid; place-items: center; flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%; background: #232034; color: #c9b4fc; font-size: 10px; }
+.result strong { color: #00db72; font-size: 13px; white-space: nowrap; }
+.caption { margin: 8px 0 0; color: #737a89; font-size: 10px; }
+.state { margin: 0; padding: 14px 4px; color: #969ca9; font-size: 12px; line-height: 1.5; }
+.state p { margin-top: 0; }
+.state button { border: 1px solid #34394a; border-radius: 6px; padding: 5px 10px; background: #14131e; color: white; }
