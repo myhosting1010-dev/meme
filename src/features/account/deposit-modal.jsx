@@ -53,11 +53,12 @@ export function DepositModal({ onDeposited, onPlanSubmitted, plan = null, openOn
   useEffect(() => {
     if (!openOnMount) return;
     setPortalTarget(document.body);
+    if (dialog.current && !dialog.current.open) dialog.current.showModal();
     loadWallets();
   }, [openOnMount, loadWallets]);
   useEffect(() => {
-    if (portalTarget && (openOnMount || !plan) && !dialog.current.open) dialog.current.showModal();
-  }, [portalTarget, openOnMount, plan]);
+    if (portalTarget && !dialog.current.open) dialog.current.showModal();
+  }, [portalTarget]);
   useEffect(() => {
     if (!toast) return undefined;
     const timer = window.setTimeout(() => setToast(""), 6000);

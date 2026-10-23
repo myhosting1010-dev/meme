@@ -20,7 +20,6 @@
 .membership button { border: 0; background: transparent; color: #9862ff; text-decoration: underline; font-size: 16px; }
 .balance { overflow: hidden; }
 .balance > strong { position: relative; display: block; margin: 0 0 20px; font-size: 42px; line-height: 1.1; font-weight: 750; }
-.watermark { position: absolute; top: 0; right: 18px; width: 96px; height: 137px; background: #00dba10a; clip-path: polygon(50% 0, 100% 33%, 0 33%, 50% 0, 50% 41%, 100% 41%, 50% 100%, 0 41%, 50% 41%); }
 .balanceActions { position: relative; display: flex; gap: 11px; }
 .balanceActions button { flex: 1; min-height: 51px; padding: 10px; border: 1px solid #232838; border-radius: 12px; background: #1a1d26; color: white; font-size: 19px; font-weight: 600; }
 .balanceActions button:last-child { background: #050505; }

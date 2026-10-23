@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ArrowLeft, BriefcaseBusiness, X } from "lucide-react";
 import styles from "./account-profile.module.css";
 import { DepositModal } from "./deposit-modal";
@@ -10,7 +11,8 @@ import { TransactionHistory } from "./transaction-history";
 const money = (cents) => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(cents / 100);
 const signedMoney = (cents) => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", signDisplay: "always" }).format(cents / 100);
 
-export function AccountProfile({ profile }) {
+export function AccountProfile({ profile, openDeposit = false }) {
+  const router = useRouter();
   const [tab, setTab] = useState("trades");
   const [historyRefresh, setHistoryRefresh] = useState(0);
   const [message, setMessage] = useState("");
@@ -31,7 +33,7 @@ export function AccountProfile({ profile }) {
     <div className={styles.cards}>
       <section className={`${styles.card} ${styles.identity}`} aria-label="User information"><div className={styles.avatar}>{profile.username.charAt(0).toUpperCase()}</div><div className={styles.userDetails}><h2>User</h2><strong>{profile.username}</strong><p>{profile.email}</p><div className={styles.social}><X size={20} aria-hidden="true" /><span>{profile.twitterUsername ? `@${profile.twitterUsername}` : "Not linked"}</span><button type="button" onClick={() => setMessage("X account linking is not connected yet.")}>Link</button></div></div></section>
       <section className={`${styles.card} ${styles.membership}`}><h2>Membership status</h2><div><span className={styles.plan}>{profile.membershipPlan === "premium" ? "Premium plan" : "Free plan"}</span><Link href="/premium">Upgrade</Link></div></section>
-      <section className={`${styles.card} ${styles.balance}`}><span className={styles.watermark} aria-hidden="true" /><h2>Available balance</h2><strong>{money(profile.balance)}</strong><div className={styles.balanceActions}><DepositModal onDeposited={() => { setHistoryRefresh((value) => value + 1); setTab("history"); }} /><button type="button" onClick={() => setMessage("Withdrawals are not connected yet. Your balance has not changed.")}>Withdraw</button></div></section>
+      <section className={`${styles.card} ${styles.balance}`}><h2>Available balance</h2><strong>{money(profile.balance)}</strong><div className={styles.balanceActions}><DepositModal openOnMount={openDeposit} onDismiss={() => { if (openDeposit) router.replace("/profile", { scroll: false }); }} onDeposited={() => { setHistoryRefresh((value) => value + 1); setTab("history"); }} /><button type="button" onClick={() => setMessage("Withdrawals are not connected yet. Your balance has not changed.")}>Withdraw</button></div></section>
     </div>
     {message && <div className={styles.notice} role="status"><span>{message}</span><button type="button" aria-label="Dismiss message" onClick={() => setMessage("")}><X size={18} /></button></div>}
     <div className={styles.tabs} role="tablist" aria-label="Account activity"><button type="button" id="trades-tab" role="tab" aria-selected={tab === "trades"} aria-controls="trades-panel" tabIndex={tab === "trades" ? 0 : -1} onClick={() => setTab("trades")} onKeyDown={(event) => { if (["ArrowLeft", "ArrowRight", "End"].includes(event.key)) { event.preventDefault(); setTab("history"); document.getElementById("history-tab").focus(); } }}>Trades</button><button type="button" id="history-tab" role="tab" aria-selected={tab === "history"} aria-controls="history-panel" tabIndex={tab === "history" ? 0 : -1} onClick={() => setTab("history")} onKeyDown={(event) => { if (["ArrowLeft", "ArrowRight", "Home"].includes(event.key)) { event.preventDefault(); setTab("trades"); document.getElementById("trades-tab").focus(); } }}>Transaction History</button></div>

@@ -20,7 +20,6 @@ export function AuthProvider({ children }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [toast, setToast] = useState("");
-  const [loungePending, setLoungePending] = useState(false);
   const signup = mode === "signup";
 
   useEffect(() => {
@@ -62,7 +61,6 @@ export function AuthProvider({ children }) {
       if (!response.ok) throw new Error(data.error);
       setUser(data.user);
       if (data.user) { router.push("/alpha-lounge"); return; }
-      setLoungePending(true);
       openAuth();
       setToast("You need to signin to access this feature");
     } catch (cause) { openAuth(); setError(cause.message || "Unable to check your session. Please try again."); }
@@ -88,7 +86,7 @@ export function AuthProvider({ children }) {
       if (!response.ok) throw new Error(data.error || "Unable to sign in. Please try again.");
       setUser(data.user); setToast(""); form.reset(); dialog.current.close();
       if (signup) router.push("/profile");
-      else if (loungePending) router.push("/alpha-lounge");
+      else router.push("/profile?deposit=1");
       router.refresh();
     } catch (cause) { setError(cause.message || "Unable to reach the account service."); }
     finally { submitting.current = false; setBusy(false); }
@@ -96,7 +94,7 @@ export function AuthProvider({ children }) {
 
   return <AuthContext.Provider value={{ user, openAuth, accessLounge, signout, requireSignin }}>
     {children}
-    {target && createPortal(<dialog ref={dialog} className={styles.modal} aria-labelledby="auth-title" onClick={(event) => { if (event.target === event.currentTarget && !busy) dialog.current.close(); }} onCancel={(event) => { if (busy) event.preventDefault(); }} onClose={() => { setToast(""); setError(""); setLoungePending(false); }}>
+    {target && createPortal(<dialog ref={dialog} className={styles.modal} aria-labelledby="auth-title" onClick={(event) => { if (event.target === event.currentTarget && !busy) dialog.current.close(); }} onCancel={(event) => { if (busy) event.preventDefault(); }} onClose={() => { setToast(""); setError(""); }}>
       {toast && <div className={styles.toast} role="alert"><CircleAlert size={23} aria-hidden="true" />{toast}</div>}
       <div className={styles.content}>
         <button className={styles.close} type="button" disabled={busy} aria-label="Close sign in" onClick={() => dialog.current.close()}><X size={21} /></button>
