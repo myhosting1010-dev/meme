@@ -19,11 +19,12 @@ export function Sidebar({ collapsed = false, onToggle, mobile = false, onNavigat
         <button className="icon-button sidebar-toggle" type="button" onClick={onToggle} aria-label={mobile ? "Close navigation" : collapsed ? "Expand sidebar" : "Collapse sidebar"} aria-expanded={!collapsed}>{mobile ? <X size={19} /> : <PanelLeft size={18} />}</button>
       </div>
       <nav className="sidebar-content" aria-label="Main navigation">
-        <Link href="/" aria-current={pathname === "/" ? "page" : undefined} className="nav-item dashboard-link" onClick={onNavigate}><LayoutDashboard size={18} aria-hidden="true" /><span>Dashboard</span></Link>
+        <Link href={user?.role === "admin" ? "/admin" : "/"} aria-current={pathname === "/" || pathname === "/admin" ? "page" : undefined} className="nav-item dashboard-link" onClick={onNavigate}><LayoutDashboard size={18} aria-hidden="true" /><span>Dashboard</span></Link>
         <Link href="/premium" aria-current={pathname === "/premium" ? "page" : undefined} className={`nav-item ${pathname === "/premium" ? "nav-item--premium" : ""}`} onClick={onNavigate}><Star size={19} aria-hidden="true" /><span>Get Premium</span></Link>
         <PerformanceModal onOpen={onNavigate} />
         {user?.role === "admin" && <Link href="/admin/wallets" className="nav-item dashboard-link" aria-current={pathname === "/admin/wallets" ? "page" : undefined} onClick={onNavigate}><Wallet size={19} aria-hidden="true" /><span>Wallets</span></Link>}
         {user?.role === "admin" && <Link href="/admin/traders" className="nav-item dashboard-link" aria-current={pathname === "/admin/traders" ? "page" : undefined} onClick={onNavigate}><UsersRound size={19} aria-hidden="true" /><span>Traders</span></Link>}
+        {user?.role === "admin" && <Link href="/admin/trades" className="nav-item dashboard-link" aria-current={pathname === "/admin/trades" ? "page" : undefined} onClick={onNavigate}><TrendingUp size={19} aria-hidden="true" /><span>Trades</span></Link>}
         {user?.role === "admin" && <Link href="/admin/users" className="nav-item dashboard-link" aria-current={pathname === "/admin/users" ? "page" : undefined} onClick={onNavigate}><UsersRound size={19} aria-hidden="true" /><span>Users</span></Link>}
         {user?.role === "admin" && <Link href="/admin/transactions" className="nav-item dashboard-link" aria-current={pathname === "/admin/transactions" ? "page" : undefined} onClick={onNavigate}><ClipboardList size={19} aria-hidden="true" /><span>Transactions</span></Link>}
         <div className="nav-group"><h2>Resources</h2><Link href="/how-it-works" className="nav-item" onClick={onNavigate}><BookOpen size={19} aria-hidden="true" /><span>How It Works</span></Link><NavItem icon={X}>Support</NavItem></div>

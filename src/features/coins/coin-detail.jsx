@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Copy, ExternalLink } from "lucide-react";
 import { CoinAvatar } from "@/features/coins/coin-avatar";
@@ -10,6 +11,10 @@ import { coinPairUrl } from "@/services/dexscreener-data";
 import { useAuth } from "@/features/auth/auth-provider";
 
 export function CoinDetail({ chain, pair }) {
+  const router = useRouter();
+  const submitting = useRef(false);
+  const purchaseRequest = useRef(null);
+  const [buying, setBuying] = useState(false);
   const { requireSignin } = useAuth();
   const [amount, setAmount] = useState("");
   const [buyMessage, setBuyMessage] = useState("");
@@ -42,11 +47,26 @@ export function CoinDetail({ chain, pair }) {
 
   async function buy(event) {
     event.preventDefault();
+    if (submitting.current) return;
     const form = event.currentTarget;
     setBuyMessage("");
-    if (!await requireSignin()) return;
     if (!form.reportValidity()) return;
-    setBuyMessage("Trading is not connected yet. No purchase has been made.");
+    submitting.current = true;
+    setBuying(true);
+    try {
+      if (!await requireSignin()) return;
+      const fingerprint = JSON.stringify({ chain, pair, amount });
+      if (purchaseRequest.current?.fingerprint !== fingerprint) purchaseRequest.current = { fingerprint, idempotencyKey: crypto.randomUUID() };
+      const response = await fetch("/api/trades", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chain, pair, amount, idempotencyKey: purchaseRequest.current.idempotencyKey }),
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || "Unable to complete your purchase.");
+      router.push("/profile");
+      router.refresh();
+    } catch (cause) { setBuyMessage(cause.message || "Unable to reach the trade service. Please retry."); }
+    finally { submitting.current = false; setBuying(false); }
   }
 
   const coin = data?.coin?.chain === chain && data?.coin?.pairAddress === pair ? data.coin : null;
@@ -57,7 +77,7 @@ export function CoinDetail({ chain, pair }) {
         <Link href="/" className="icon-button" aria-label="Back to coins"><ArrowLeft size={20} /></Link>
         {coin ? <div className="detail-identity"><CoinAvatar coin={coin} /><div><span className="detail-symbol">{coin.symbol}</span><h1>{coin.name}</h1><button type="button" className="detail-copy" onClick={copyAddress}><Copy size={14} />{copied ? "Copied" : "Copy token address"}</button>{copyError && <span role="status">Copy unavailable</span>}</div></div> : <h1>Loading coin…</h1>}
         <div className="detail-metrics"><div><span>Market cap</span><strong>{formatUsd(coin?.marketCap)}</strong></div><div><span>24H volume</span><strong>{formatUsd(coin?.volume24h)}</strong></div><div title="The current provider does not report a peak multiplier"><span>Peak</span><strong className="detail-peak">—</strong></div></div>
-        <form className="detail-buy" onSubmit={buy} noValidate><input type="number" inputMode="decimal" min="0.01" step="0.01" required aria-label="Buy amount in USD" placeholder="$ 0.00" value={amount} onChange={(event) => { setAmount(event.target.value); setBuyMessage(""); }} /><Button type="submit">BUY</Button></form>
+        <form className="detail-buy" onSubmit={buy} noValidate><input type="number" inputMode="decimal" min="0.01" step="0.01" required disabled={buying} aria-label="Buy amount in USD" placeholder="$ 0.00" value={amount} onChange={(event) => { setAmount(event.target.value); setBuyMessage(""); }} /><Button type="submit" disabled={buying}>{buying ? "Buying…" : "BUY"}</Button></form>
       </header>
       {buyMessage && <p className="detail-note" role="status">{buyMessage}</p>}
       {error && <div className="feed-error" role="alert"><p>{error}{coin && " Showing the last successful update."}</p><Button onClick={() => setRetry((value) => value + 1)}>Retry</Button></div>}

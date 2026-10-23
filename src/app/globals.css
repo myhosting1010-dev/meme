@@ -38,7 +38,7 @@ button:disabled { cursor: not-allowed; }
 .sidebar { height: 100%; background: #090b0f; border-right: 1px solid var(--border); overflow-y: auto; }
 .brand-row { height: 90px; display: flex; align-items: center; justify-content: space-between; padding: 0 25px 0 32px; border-bottom: 1px solid #171922; }
 .brand { display: flex; align-items: center; gap: 23px; color: var(--foreground); text-decoration: none; }
-.brand-logo { display: block; width: 150px; max-height: 76px; object-fit: contain; flex-shrink: 0; }
+.brand-logo { display: block; width: 64px; height: 64px; object-fit: contain; flex-shrink: 0; }
 .icon-button { display: grid; place-items: center; width: 34px; height: 34px; border: 1px solid var(--border); border-radius: 6px; background: #0d1016; color: var(--muted); }
 .sidebar-content { padding: 19px 15px 24px; }
 .nav-item { width: 100%; display: flex; align-items: center; gap: 16px; min-height: 51px; padding: 10px 15px; color: var(--muted); border: 1px solid transparent; border-radius: 10px; font-size: 18px; text-align: left; background: transparent; text-decoration: none; white-space: nowrap; }
@@ -67,7 +67,7 @@ button:disabled { cursor: not-allowed; }
 .sidebar-user small i { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
 .sidebar--collapsed .brand-row { padding: 0 12px; flex-direction: column; justify-content: center; gap: 9px; }
 .sidebar--collapsed .brand-name, .sidebar--collapsed .nav-item span, .sidebar--collapsed .nav-group { display: none; }
-.sidebar--collapsed .brand-logo { width: 54px; }
+.sidebar--collapsed .brand-logo { width: 40px; height: 40px; }
 .sidebar--collapsed .sidebar-content { padding: 20px 10px; }
 .sidebar--collapsed .nav-item { justify-content: center; padding: 10px; }
 .app-main { margin-left: var(--sidebar-width); min-width: 0; }
@@ -180,7 +180,7 @@ button:disabled { cursor: not-allowed; }
   .app-main { margin-left: 0; }
   .mobile-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 16px; border-bottom: 1px solid var(--border); background: #090b0f; }
   .mobile-header .brand { min-width: 0; }
-  .mobile-header .brand-logo { width: 104px; max-height: 48px; }
+  .mobile-header .brand-logo { width: 48px; height: 48px; }
   .mobile-header-actions { display: flex; align-items: center; gap: 10px; flex: 0 0 auto; }
   .mobile-signin-button { min-height: 34px; padding: 0 12px; border: 0; border-radius: 8px; background: #8fe6a9; color: #07130b; font-size: 13px; font-weight: 600; white-space: nowrap; }
   .coin-toolbar-actions { order: initial; width: auto; }
@@ -189,7 +189,7 @@ button:disabled { cursor: not-allowed; }
 }
 @media (max-width: 650px) {
   .mobile-header { padding: 8px 14px; }
-  .mobile-header .brand-logo { width: 68px; max-height: 34px; }
+  .mobile-header .brand-logo { width: 40px; height: 40px; }
   .mobile-header-actions { gap: 8px; }
   .coin-toolbar { gap: 12px; padding: 16px; }
   .sort-controls { overflow-x: auto; width: calc(100% - 50px); gap: 2px; }

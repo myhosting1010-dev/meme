@@ -44,7 +44,7 @@ export function AlphaLounge({ viewer }) {
         <div><span className={styles.eyebrow}>Community</span><h1 id="lounge-title">Alpha Lounge</h1><p>See how the community is performing.</p></div>
         <button type="button" className={styles.refresh} onClick={() => { const controller = new AbortController(); loadTraders(controller.signal); }} disabled={loading} aria-label="Refresh traders"><RefreshCw size={17} />Refresh</button>
       </header>
-      <nav className={styles.tabs} aria-label="Alpha Lounge sections"><button type="button" aria-current="page">Traders</button><button type="button" disabled title="Coming soon">Squads</button><button type="button" disabled title="Coming soon">Rewards</button><button type="button" disabled title="Coming soon">Best callouts</button></nav>
+      <nav className={styles.tabs} aria-label="Alpha Lounge sections"><button type="button" aria-current="page">Traders</button></nav>
       <div className={styles.viewerRank}>
         <span className={styles.viewerAvatar}>{viewer.username.slice(0, 1).toUpperCase()}</span>
         <span className={styles.you}>You</span>

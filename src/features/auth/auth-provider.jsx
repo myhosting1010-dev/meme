@@ -87,7 +87,8 @@ export function AuthProvider({ children }) {
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Unable to sign in. Please try again.");
       setUser(data.user); setToast(""); form.reset(); dialog.current.close();
-      if (loungePending) router.push("/alpha-lounge");
+      if (signup) router.push("/profile");
+      else if (loungePending) router.push("/alpha-lounge");
       router.refresh();
     } catch (cause) { setError(cause.message || "Unable to reach the account service."); }
     finally { submitting.current = false; setBusy(false); }

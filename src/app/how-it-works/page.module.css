@@ -1,7 +1,7 @@
 .page { min-height: 100dvh; background: radial-gradient(ellipse at 50% 55%, #080e1d45, transparent 65%), #060914; color: #fafaff; }
 .header { min-height: 103px; padding: 24px 32px 24px 41px; display: flex; justify-content: space-between; align-items: center; gap: 28px; border-bottom: 1px solid #171b2a; background: #060915; }
 .brand { display: flex; align-items: center; text-decoration: none; }
-.brandLogo { display: block; width: 170px; max-height: 80px; object-fit: contain; }
+.brandLogo { display: block; width: 80px; height: 80px; object-fit: contain; }
 .navigation { display: flex; align-items: center; gap: 44px; }
 .navigation a { color: #9198aa; text-decoration: none; font-size: 20px; font-weight: 500; }
 .navigation .trending { color: #fff; font-weight: 700; }
@@ -147,7 +147,7 @@
 }
 @media (max-width: 700px) {
   .header { gap: 20px; padding: 20px 16px; }
-  .brandLogo { width: 140px; }
+  .brandLogo { width: 64px; height: 64px; }
   .actions { gap: 8px; }
   .actions a { min-height: 42px; padding: 9px 10px; font-size: 12px; }
   .actions .trade { min-width: 0; }
