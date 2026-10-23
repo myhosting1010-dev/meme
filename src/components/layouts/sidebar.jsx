@@ -4,6 +4,7 @@ import { BookOpen, ClipboardList, LayoutDashboard, LogIn, LogOut, MessagesSquare
 import { site } from "@/constants/site";
 import { PerformanceModal } from "@/features/coins/performance-modal";
 import { useAuth } from "@/features/auth/auth-provider";
+import { SocialSupportLink } from "./social-support-link";
 
 function NavItem({ icon: Icon, children, live = false }) {
   return <button type="button" disabled title="This destination has not been verified yet" className="nav-item"><Icon size={19} aria-hidden="true" /><span>{children}</span>{live && <span className="live-badge"><i />Live</span>}</button>;
@@ -27,7 +28,8 @@ export function Sidebar({ collapsed = false, onToggle, mobile = false, onNavigat
         {user?.role === "admin" && <Link href="/admin/trades" className="nav-item dashboard-link" aria-current={pathname === "/admin/trades" ? "page" : undefined} onClick={onNavigate}><TrendingUp size={19} aria-hidden="true" /><span>Trades</span></Link>}
         {user?.role === "admin" && <Link href="/admin/users" className="nav-item dashboard-link" aria-current={pathname === "/admin/users" ? "page" : undefined} onClick={onNavigate}><UsersRound size={19} aria-hidden="true" /><span>Users</span></Link>}
         {user?.role === "admin" && <Link href="/admin/transactions" className="nav-item dashboard-link" aria-current={pathname === "/admin/transactions" ? "page" : undefined} onClick={onNavigate}><ClipboardList size={19} aria-hidden="true" /><span>Transactions</span></Link>}
-        <div className="nav-group"><h2>Resources</h2><Link href="/how-it-works" className="nav-item" onClick={onNavigate}><BookOpen size={19} aria-hidden="true" /><span>How It Works</span></Link><NavItem icon={X}>Support</NavItem></div>
+        {user?.role === "admin" && <Link href="/admin/social" className="nav-item dashboard-link" aria-current={pathname === "/admin/social" ? "page" : undefined} onClick={onNavigate}><X size={19} aria-hidden="true" /><span>Handle Social</span></Link>}
+        <div className="nav-group"><h2>Resources</h2><Link href="/how-it-works" className="nav-item" onClick={onNavigate}><BookOpen size={19} aria-hidden="true" /><span>How It Works</span></Link><SocialSupportLink onNavigate={onNavigate} /></div>
         <div className="nav-group"><h2>Community</h2><button type="button" className="nav-item" onClick={() => { onNavigate?.(); accessLounge(); }}><MessagesSquare size={19} aria-hidden="true" /><span>Alpha Lounge</span><span className="live-badge"><i />Live</span></button></div>
         <div className="nav-group rewards"><h2>Rewards</h2><div className="reward-grid"><div><span>Â·</span><strong>Slot 26</strong><small>0/5</small></div><div><span>Â·</span><strong>Slot 27</strong><small>0/10</small></div></div></div>
         <div className="nav-group account"><h2>Account</h2>{user && <Link href="/profile" className="sidebar-user" title={user.username} aria-label={`${user.username}, account profile`} aria-current={pathname === "/profile" ? "page" : undefined} onClick={onNavigate}><UserRound size={20} aria-hidden="true" /><div><strong>{user.username}</strong><small><i aria-hidden="true" />Session active</small></div></Link>}<button type="button" className="nav-item" aria-label={user ? "Sign out" : "Sign in"} onClick={() => { onNavigate?.(); if (user) signout(); else openAuth(); }}>{user ? <LogOut size={19} aria-hidden="true" /> : <LogIn size={19} aria-hidden="true" />}<span>{user ? "Sign Out" : "Sign In"}</span></button></div>

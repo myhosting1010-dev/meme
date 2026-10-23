@@ -40,6 +40,8 @@
 .empty svg { color: #232838; }
 .empty p { margin: 0; font-size: 19px; }
 .tablePanel td.transactionName, .tablePanel td.amount { color: white; font-weight: 600; }
+.tablePanel td.pnlProfit { color: #00dba1; }
+.tablePanel td.pnlLoss { color: #ff6269; }
 .status { display: inline-block; padding: 7px 11px; border: 1px solid; border-radius: 5px; font-size: 12px; font-family: monospace; letter-spacing: 1px; text-transform: uppercase; }
 .pagination { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 18px 23px; border-top: 1px solid #232838; color: #9299a7; font-size: 13px; flex-wrap: wrap; }
 .pending { color: #ffc400; background: #332a10; border-color: #675214; }

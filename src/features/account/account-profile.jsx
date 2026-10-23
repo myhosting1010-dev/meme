@@ -11,6 +11,7 @@ import { TraderSlideshow } from "@/features/traders/trader-slideshow";
 
 const money = (cents) => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(cents / 100);
 const signedMoney = (cents) => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", signDisplay: "always" }).format(cents / 100);
+const pnlClass = (value) => value > 0 ? styles.pnlProfit : value < 0 ? styles.pnlLoss : undefined;
 
 export function AccountProfile({ profile, openDeposit = false }) {
   const router = useRouter();
@@ -48,7 +49,7 @@ export function AccountProfile({ profile, openDeposit = false }) {
         <tbody>{profile.purchases?.length ? profile.purchases.map((trade) => <tr key={trade.id}>
           <td>{trade.coinName}<br /><small>{new Intl.NumberFormat("en-US", { maximumSignificantDigits: 10 }).format(trade.quantity)} {trade.symbol}</small></td>
           <td>{new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumSignificantDigits: 8 }).format(trade.priceUsd)}</td>
-          <td>{money(trade.amount)}</td><td>{signedMoney(trade.realizedPnl ?? 0)}</td><td>{signedMoney(trade.unrealizedPnl ?? 0)}</td><td>Purchased</td>
+          <td>{money(trade.amount)}</td><td className={pnlClass(trade.realizedPnl)}>{signedMoney(trade.realizedPnl ?? 0)}</td><td className={pnlClass(trade.unrealizedPnl)}>{signedMoney(trade.unrealizedPnl ?? 0)}</td><td>Purchased</td>
         </tr>) : <tr><td colSpan={6}><div className={styles.empty}><BriefcaseBusiness size={56} aria-hidden="true" /><p>No trades active.</p></div></td></tr>}</tbody>
       </table></div>
     </div>
