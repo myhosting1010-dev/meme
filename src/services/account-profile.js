@@ -18,7 +18,7 @@ export async function getAccountProfile(userId) {
     purchases: (user.purchases ?? []).map((trade) => ({
       id: trade._id.toString(), coinName: trade.coinName, symbol: trade.symbol,
       amount: trade.amount, priceUsd: trade.priceUsd, marketCap: trade.marketCap, quantity: trade.quantity,
-      status: trade.status ?? "open",
+      status: trade.status ?? "open", statusVersion: trade.statusVersion ?? 0,
       realizedPnl: trade.realizedPnl ?? 0, unrealizedPnl: trade.unrealizedPnl ?? 0,
     })),
     ...history,

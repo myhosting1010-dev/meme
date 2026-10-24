@@ -1,4 +1,7 @@
 import mongoose from "mongoose";
+import { userTradeStatusSchema } from "@/schemas/trade-status";
+import { closeUserTrade } from "@/services/close-user-trade";
+import { readAdminJson } from "@/lib/admin-api";
 import { getCurrentUser } from "@/lib/auth/session";
 import { User } from "@/models/user";
 import { tradeSchema, purchaseQuantity } from "@/schemas/trade";
@@ -60,4 +63,23 @@ export async function POST(request) {
     }
     return json({ trade, redirectTo: "/profile" }, 201);
   } catch { return json({ error: "Unable to complete your purchase. Retry with the same amount to check its status safely." }, 503); }
+}
+
+
+export async function PATCH(request) {
+  const url = new URL(request.url);
+  if (request.headers.get("origin") !== url.protocol + "//" + (request.headers.get("host") ?? url.host)) return json({ error: "Invalid request origin." }, 403);
+  try {
+    const user = await getCurrentUser();
+    if (!user) return json({ error: "Sign in to manage your trades." }, 401);
+    const body = await readAdminJson(request);
+    if (body.error) return body.error;
+    const parsed = userTradeStatusSchema.safeParse(body.data);
+    if (!parsed.success) return json({ error: parsed.error.issues[0].message }, 400);
+    const result = await closeUserTrade({ ...parsed.data, userId: user.id });
+    return json(result.body, result.status);
+  } catch (error) {
+    console.error("[user trade close] Request failed", { name: error?.name, code: error?.code });
+    return json({ error: "Unable to close your trade right now. Refresh to check its status before retrying." }, 503);
+  }
 }

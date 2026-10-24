@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { tradeStatusSchema, tradeStatusUpdate } from "../../src/schemas/trade-status.js";
+import { tradeStatusSchema, userTradeStatusSchema, tradeStatusUpdate } from "../../src/schemas/trade-status.js";
 import { User } from "../../src/models/user.js";
 
 const input = { userId: "a".repeat(24), tradeId: "b".repeat(24), version: 0, status: "closed" };
@@ -98,4 +98,18 @@ test("settlements reject unsafe sums and preserve exact signed cancellation", ()
   assert.equal(change({ realizedPnl: Number.MAX_SAFE_INTEGER, unrealizedPnl: -Number.MAX_SAFE_INTEGER }).settlement, 52700);
   assert.equal(Math.abs(change({ status: "open", settledAmount: 0 }).balanceChange), 0);
   assert.equal(change({ status: "open", settledAmount: -200 }).balanceChange, 200);
+});
+
+
+test("user trade actions cannot supply ownership, PNL, amounts or balance", () => {
+  const request = { tradeId: input.tradeId, status: "closed", version: 0 };
+  assert.equal(userTradeStatusSchema.safeParse(request).success, true);
+  assert.equal(userTradeStatusSchema.safeParse({ ...request, status: "open" }).success, false);
+  for (const extra of [{ userId: input.userId }, { adminId: input.userId }, { amount: 1 }, { realizedPnl: 99999 }, { unrealizedPnl: 99999 }, { balance: 99999 }, { settledAmount: 99999 }]) {
+    assert.equal(userTradeStatusSchema.safeParse({ ...request, ...extra }).success, false);
+  }
+  const operation = change({ userId: "d".repeat(24), adminId: "d".repeat(24), realizedPnl: -100, unrealizedPnl: 200 });
+  assert.equal(operation.filter._id, "d".repeat(24));
+  assert.equal(operation.update.$set["purchases.$.statusUpdatedBy"], "d".repeat(24));
+  assert.equal(operation.update.$inc.balance, 52800);
 });

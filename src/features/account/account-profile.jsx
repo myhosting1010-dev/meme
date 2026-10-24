@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, BriefcaseBusiness, X } from "lucide-react";
@@ -19,6 +19,28 @@ export function AccountProfile({ profile, openDeposit = false }) {
   const [tab, setTab] = useState("trades");
   const [historyRefresh, setHistoryRefresh] = useState(0);
   const [message, setMessage] = useState("");
+  const [tradeError, setTradeError] = useState("");
+  const [pendingTrade, setPendingTrade] = useState(null);
+  const tradeInFlight = useRef(false);
+  const [tradeResult, setTradeResult] = useState(null);
+  const account = tradeResult?.source === profile ? tradeResult.account : profile;
+
+  async function changeTradeStatus(trade) {
+    if (tradeInFlight.current || trade.status === "closed") return;
+    tradeInFlight.current = true; setPendingTrade(trade.id); setTradeError(""); setMessage("");
+    try {
+      const response = await fetch("/api/trades", {
+        method: "PATCH", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ tradeId: trade.id, version: trade.statusVersion ?? 0, status: "closed" }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Unable to update your trade.");
+      setTradeResult({ source: profile, account: { ...account, balance: data.balance, purchases: account.purchases.map((item) => item.id === data.tradeId ? { ...item, status: data.status, statusVersion: data.statusVersion, realizedPnl: data.realizedPnl, unrealizedPnl: data.unrealizedPnl } : item) } });
+      setMessage(data.alreadyClosed ? "This trade is already closed. Your balance is up to date." : "Trade closed. " + money(Math.abs(data.balanceChange)) + (data.balanceChange < 0 ? " deducted from" : " added to") + " your available balance.");
+      router.refresh();
+    } catch (cause) { setTradeError(cause.message || "Unable to update your trade."); router.refresh(); }
+    finally { tradeInFlight.current = false; setPendingTrade(null); }
+  }
   useEffect(() => {
     if (window.location.hash === "#history-panel") {
       setTab("history");
@@ -37,20 +59,26 @@ export function AccountProfile({ profile, openDeposit = false }) {
       <section className={`${styles.card} ${styles.identity}`} aria-label="User information"><div className={styles.avatar}>{profile.username.charAt(0).toUpperCase()}</div><div className={styles.userDetails}><h2>User</h2><strong>{profile.username}</strong><p>{profile.email}</p><div className={styles.social}><X size={20} aria-hidden="true" /><span>{profile.twitterUsername ? `@${profile.twitterUsername}` : "Not linked"}</span><button type="button" onClick={() => setMessage("X account linking is not connected yet.")}>Link</button></div></div></section>
       <section className={`${styles.card} ${styles.membership}`}><h2>Membership status</h2><div><span className={styles.plan}>{profile.membershipPlan === "premium" ? "Premium plan" : "Free plan"}</span><Link href="/premium">Upgrade</Link></div></section>
       <aside className={styles.balanceSidebar} aria-label="Balance and top traders">
-        <section className={`${styles.card} ${styles.balance}`}><h2>Available balance</h2><strong>{money(profile.balance)}</strong><div className={styles.balanceActions}><DepositModal openOnMount={openDeposit} onDismiss={() => { if (openDeposit) router.replace("/profile", { scroll: false }); }} onDeposited={() => { setHistoryRefresh((value) => value + 1); setTab("history"); }} /><WithdrawalModal onRequested={() => { setHistoryRefresh((value) => value + 1); setTab("history"); }} /></div></section>
+        <section className={`${styles.card} ${styles.balance}`}><h2>Available balance</h2><strong>{money(account.balance)}</strong><div className={styles.balanceActions}><DepositModal openOnMount={openDeposit} onDismiss={() => { if (openDeposit) router.replace("/profile", { scroll: false }); }} onDeposited={() => { setHistoryRefresh((value) => value + 1); setTab("history"); }} /><WithdrawalModal onRequested={() => { setHistoryRefresh((value) => value + 1); setTab("history"); }} /></div></section>
         <TraderSlideshow />
       </aside>
     </div>
+    {tradeError && <div className={styles.tradeError} role="alert">{tradeError}<button type="button" className="button" onClick={() => router.refresh()}>Refresh trades</button></div>}
     {message && <div className={styles.notice} role="status"><span>{message}</span><button type="button" aria-label="Dismiss message" onClick={() => setMessage("")}><X size={18} /></button></div>}
     <div className={styles.tabs} role="tablist" aria-label="Account activity"><button type="button" id="trades-tab" role="tab" aria-selected={tab === "trades"} aria-controls="trades-panel" tabIndex={tab === "trades" ? 0 : -1} onClick={() => setTab("trades")} onKeyDown={(event) => { if (["ArrowLeft", "ArrowRight", "End"].includes(event.key)) { event.preventDefault(); setTab("history"); document.getElementById("history-tab").focus(); } }}>Trades</button><button type="button" id="history-tab" role="tab" aria-selected={tab === "history"} aria-controls="history-panel" tabIndex={tab === "history" ? 0 : -1} onClick={() => setTab("history")} onKeyDown={(event) => { if (["ArrowLeft", "ArrowRight", "Home"].includes(event.key)) { event.preventDefault(); setTab("trades"); document.getElementById("trades-tab").focus(); } }}>Transaction History</button></div>
     <div id="trades-panel" role="tabpanel" aria-labelledby="trades-tab" hidden={tab !== "trades"} tabIndex={0} className={styles.tablePanel}>
-     
+
+      <p className={styles.tradeHelp}>Closing adds the trade amount plus realized and unrealized PNL to your available balance.</p>
       <div className={styles.tableScroll}><table>
         <thead><tr><th>Coin</th><th>Entry price</th><th>Amount USD</th><th>Realized PNL</th><th>Unrealized PNL</th><th>Status / Action</th></tr></thead>
-        <tbody>{profile.purchases?.length ? profile.purchases.map((trade) => <tr key={trade.id}>
+        <tbody>{account.purchases?.length ? account.purchases.map((trade) => <tr key={trade.id}>
           <td>{trade.coinName}<br /><small>{new Intl.NumberFormat("en-US", { maximumSignificantDigits: 10 }).format(trade.quantity)} {trade.symbol}</small></td>
           <td>{new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumSignificantDigits: 8 }).format(trade.priceUsd)}</td>
-          <td>{money(trade.amount)}</td><td className={pnlClass(trade.realizedPnl)}>{signedMoney(trade.realizedPnl ?? 0)}</td><td className={pnlClass(trade.unrealizedPnl)}>{signedMoney(trade.unrealizedPnl ?? 0)}</td><td>{trade.status === "closed" ? "Closed" : "Open"}</td>
+          <td>{money(trade.amount)}</td><td className={pnlClass(trade.realizedPnl)}>{signedMoney(trade.realizedPnl ?? 0)}</td><td className={pnlClass(trade.unrealizedPnl)}>{signedMoney(trade.unrealizedPnl ?? 0)}</td><td><div className={styles.tradeActions}><span className={trade.status === "closed" ? styles.closedTrade : styles.openTrade}>{trade.status === "closed" ? "Closed" : "Open"}</span>
+
+          {trade.status !== "closed" && <button type="button" disabled={Boolean(pendingTrade)} className={styles.closeButton} onClick={() => changeTradeStatus(trade)} aria-label={"Close " + trade.coinName + " trade"}>{pendingTrade === trade.id ? "Closing..." : "Close"}</button>}
+
+          </div></td>
         </tr>) : <tr><td colSpan={6}><div className={styles.empty}><BriefcaseBusiness size={56} aria-hidden="true" /><p>No trades active.</p></div></td></tr>}</tbody>
       </table></div>
     </div>

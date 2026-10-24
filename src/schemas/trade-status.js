@@ -7,6 +7,8 @@ export const tradeStatusSchema = z.object({
   status: z.enum(["open", "closed"]),
 }).strict();
 
+export const userTradeStatusSchema = tradeStatusSchema.omit({ userId: true }).extend({ status: z.literal("closed") }).strict();
+
 export function tradeStatusUpdate({ userId, tradeId, version, status, amount, realizedPnl = 0, unrealizedPnl = 0, pnlVersion = 0, settledAmount, adminId }) {
   if (!Number.isSafeInteger(amount) || amount <= 0) throw new Error("Invalid trade amount.");
   const closing = status === "closed";
