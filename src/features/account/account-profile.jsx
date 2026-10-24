@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, BriefcaseBusiness, X } from "lucide-react";
 import styles from "./account-profile.module.css";
+import { WithdrawalModal } from "./withdrawal-modal";
 import { DepositModal } from "./deposit-modal";
 import { TransactionHistory } from "./transaction-history";
 import { TraderSlideshow } from "@/features/traders/trader-slideshow";
@@ -36,7 +37,7 @@ export function AccountProfile({ profile, openDeposit = false }) {
       <section className={`${styles.card} ${styles.identity}`} aria-label="User information"><div className={styles.avatar}>{profile.username.charAt(0).toUpperCase()}</div><div className={styles.userDetails}><h2>User</h2><strong>{profile.username}</strong><p>{profile.email}</p><div className={styles.social}><X size={20} aria-hidden="true" /><span>{profile.twitterUsername ? `@${profile.twitterUsername}` : "Not linked"}</span><button type="button" onClick={() => setMessage("X account linking is not connected yet.")}>Link</button></div></div></section>
       <section className={`${styles.card} ${styles.membership}`}><h2>Membership status</h2><div><span className={styles.plan}>{profile.membershipPlan === "premium" ? "Premium plan" : "Free plan"}</span><Link href="/premium">Upgrade</Link></div></section>
       <aside className={styles.balanceSidebar} aria-label="Balance and top traders">
-        <section className={`${styles.card} ${styles.balance}`}><h2>Available balance</h2><strong>{money(profile.balance)}</strong><div className={styles.balanceActions}><DepositModal openOnMount={openDeposit} onDismiss={() => { if (openDeposit) router.replace("/profile", { scroll: false }); }} onDeposited={() => { setHistoryRefresh((value) => value + 1); setTab("history"); }} /><button type="button" onClick={() => setMessage("Withdrawals are not connected yet. Your balance has not changed.")}>Withdraw</button></div></section>
+        <section className={`${styles.card} ${styles.balance}`}><h2>Available balance</h2><strong>{money(profile.balance)}</strong><div className={styles.balanceActions}><DepositModal openOnMount={openDeposit} onDismiss={() => { if (openDeposit) router.replace("/profile", { scroll: false }); }} onDeposited={() => { setHistoryRefresh((value) => value + 1); setTab("history"); }} /><WithdrawalModal onRequested={() => { setHistoryRefresh((value) => value + 1); setTab("history"); }} /></div></section>
         <TraderSlideshow />
       </aside>
     </div>
@@ -49,7 +50,7 @@ export function AccountProfile({ profile, openDeposit = false }) {
         <tbody>{profile.purchases?.length ? profile.purchases.map((trade) => <tr key={trade.id}>
           <td>{trade.coinName}<br /><small>{new Intl.NumberFormat("en-US", { maximumSignificantDigits: 10 }).format(trade.quantity)} {trade.symbol}</small></td>
           <td>{new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumSignificantDigits: 8 }).format(trade.priceUsd)}</td>
-          <td>{money(trade.amount)}</td><td className={pnlClass(trade.realizedPnl)}>{signedMoney(trade.realizedPnl ?? 0)}</td><td className={pnlClass(trade.unrealizedPnl)}>{signedMoney(trade.unrealizedPnl ?? 0)}</td><td>Purchased</td>
+          <td>{money(trade.amount)}</td><td className={pnlClass(trade.realizedPnl)}>{signedMoney(trade.realizedPnl ?? 0)}</td><td className={pnlClass(trade.unrealizedPnl)}>{signedMoney(trade.unrealizedPnl ?? 0)}</td><td>{trade.status === "closed" ? "Closed" : "Open"}</td>
         </tr>) : <tr><td colSpan={6}><div className={styles.empty}><BriefcaseBusiness size={56} aria-hidden="true" /><p>No trades active.</p></div></td></tr>}</tbody>
       </table></div>
     </div>

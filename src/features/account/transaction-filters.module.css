@@ -1,0 +1,10 @@
+.tabs { display: flex; flex-wrap: wrap; gap: 8px; padding: 18px; border-bottom: 1px solid var(--border, #232838); }
+.tabs button { padding: 10px 16px; border: 1px solid #303544; border-radius: 999px; background: #11141d; color: #a5adbb; font-size: 13px; font-weight: 600; cursor: pointer; }
+.tabs button[aria-selected="true"] { background: #0b3027; border-color: #00bd8d; color: #00e0a6; }
+.tabs button:focus-visible { outline: 2px solid #00e0a6; outline-offset: 3px; }
+.tabs button:disabled { opacity: .6; cursor: wait; }
+.pill { display: inline-block; width: fit-content; margin: 0 8px 4px 0; padding: 5px 10px; border: 1px solid; border-radius: 999px; font-size: 11px; font-weight: 600; white-space: nowrap; }
+.deposit { background: #0b3027; border-color: #1a6551; color: #4ce5b7; }
+.withdrawal { background: #291d3e; border-color: #63458b; color: #c6a1ff; }
+.other, .subscription, .buy, .sell { background: #182333; border-color: #324b68; color: #9bbfe9; }
+@media(max-width: 600px) { .tabs { padding: 14px; gap: 6px; } .tabs button { padding: 9px 12px; font-size: 12px; } }

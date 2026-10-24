@@ -1,3 +1,4 @@
+import { transactionTabs } from "@/lib/transaction-filters";
 import { getCurrentUser } from "@/lib/auth/session";
 import { Transaction } from "@/models/transaction";
 import { Wallet } from "@/models/wallet";
@@ -21,7 +22,9 @@ export async function GET(request) {
     if (!user) return json({ error: "Sign in to view your transactions." }, 401);
     const raw = new URL(request.url).searchParams.get("page") || "1";
     if (!/^[1-9]\d{0,5}$/.test(raw)) return json({ error: "Invalid page number." }, 400);
-    return json(await listUserTransactions(user.id, Number(raw)));
+    const type = new URL(request.url).searchParams.get("type") || "all";
+    if (!transactionTabs.some((tab) => tab.value === type)) return json({ error: "Invalid transaction type." }, 400);
+    return json(await listUserTransactions(user.id, Number(raw), type));
   } catch { return json({ error: "Transaction service is temporarily unavailable." }, 503); }
 }
 

@@ -1,15 +1,17 @@
 import "server-only";
 import { Transaction } from "@/models/transaction";
+import { transactionTypeFilter } from "@/lib/transaction-filters";
 import { User } from "@/models/user";
 
 export const serializeTransaction = (item) => ({ id: item._id.toString(), date: item.createdAt.toISOString(), type: item.type, description: item.description, cryptoMethod: item.cryptoMethod, amount: item.amount, status: item.status, walletName: item.walletName || "" });
 
-export async function listUserTransactions(userId, page = 1) {
+export async function listUserTransactions(userId, page = 1, type = "all") {
   const pageSize = 10;
+  const filter = { userId, ...transactionTypeFilter(type) };
   const [records, transactionCount, user] = await Promise.all([
-    Transaction.find({ userId }).sort({ createdAt: -1, _id: -1 }).limit(page * pageSize).lean(),
-    Transaction.countDocuments({ userId }),
-    User.findById(userId).select("+purchases").lean(),
+    Transaction.find(filter).sort({ createdAt: -1, _id: -1 }).limit(page * pageSize).lean(),
+    Transaction.countDocuments(filter),
+    type === "all" || type === "other" ? User.findById(userId).select("+purchases").lean() : Promise.resolve(null),
   ]);
   const purchases = (user?.purchases ?? []).map((trade) => ({
     id: trade._id.toString(), date: trade.createdAt.toISOString(), type: "buy",

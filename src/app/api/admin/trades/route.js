@@ -3,6 +3,8 @@ import { User } from "@/models/user";
 import { adminFailure, adminJson, authorizeAdmin, readAdminJson } from "@/lib/admin-api";
 import { tradePnlSchema } from "@/schemas/trade-pnl";
 
+import { tradeStatusSchema, tradeStatusUpdate } from "@/schemas/trade-status";
+
 export const runtime = "nodejs";
 
 export async function GET(request) {
@@ -29,6 +31,18 @@ export async function PATCH(request) {
     if (auth.error) return auth.error;
     const body = await readAdminJson(request);
     if (body.error) return body.error;
+    if (body.data && Object.hasOwn(body.data, "status")) {
+      const parsed = tradeStatusSchema.safeParse(body.data);
+      if (!parsed.success) return adminJson({ error: parsed.error.issues[0].message }, 400);
+      const { userId, tradeId, version, status } = parsed.data;
+      const account = await User.findOne({ _id: userId, "purchases._id": tradeId }).select("+purchases").lean();
+      const trade = account?.purchases.find((item) => item._id.toString().toLowerCase() === tradeId.toLowerCase());
+      if (!trade) return adminJson({ error: "Trade not found." }, 404);
+      const { filter, update, settlement, balanceChange } = tradeStatusUpdate({ ...parsed.data, tradeId: trade._id, amount: trade.amount, realizedPnl: trade.realizedPnl ?? 0, unrealizedPnl: trade.unrealizedPnl ?? 0, pnlVersion: trade.pnlVersion ?? 0, settledAmount: trade.settledAmount, adminId: auth.user.id });
+      const updatedAccount = await User.findOneAndUpdate(filter, update, { runValidators: true, returnDocument: "after", projection: { username: 1, balance: 1 } }).lean();
+      if (!updatedAccount) return adminJson({ error: "Trade changed or the balance cannot support this action. Refresh and try again." }, 409);
+      return adminJson({ tradeId, userId: updatedAccount._id.toString(), username: updatedAccount.username, status, statusVersion: version + 1, amount: trade.amount, settlement, balanceChange, balance: updatedAccount.balance });
+    }
     const parsed = tradePnlSchema.safeParse(body.data);
     if (!parsed.success) return adminJson({ error: parsed.error.issues[0].message }, 400);
     const { userId, tradeId, version, realizedPnl, unrealizedPnl } = parsed.data;
@@ -56,6 +70,7 @@ function serializeTrade({ userId, username, email, trade }) {
     coinName: trade.coinName, symbol: trade.symbol, chain: trade.chain,
     amount: trade.amount, priceUsd: trade.priceUsd, marketCap: trade.marketCap, quantity: trade.quantity,
     createdAt: trade.createdAt, realizedPnl: trade.realizedPnl ?? 0, unrealizedPnl: trade.unrealizedPnl ?? 0,
+    status: trade.status ?? "open", statusVersion: trade.statusVersion ?? 0,
     pnlVersion: trade.pnlVersion ?? 0, pnlUpdatedAt: trade.pnlUpdatedAt ?? null,
   };
 }

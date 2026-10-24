@@ -13,6 +13,11 @@ const purchaseSchema = new mongoose.Schema({
   quantity: { type: Number, required: true, min: Number.MIN_VALUE },
   realizedPnl: { type: Number, default: 0, validate: Number.isSafeInteger },
   unrealizedPnl: { type: Number, default: 0, validate: Number.isSafeInteger },
+  status: { type: String, enum: ["open", "closed"], default: "open" },
+  statusVersion: { type: Number, default: 0, min: 0, validate: Number.isSafeInteger },
+  settledAmount: { type: Number, validate: Number.isSafeInteger },
+  statusUpdatedAt: { type: Date },
+  statusUpdatedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   pnlVersion: { type: Number, default: 0, min: 0, validate: Number.isSafeInteger },
   pnlUpdatedAt: { type: Date },
   pnlUpdatedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
@@ -37,5 +42,5 @@ const userSchema = new mongoose.Schema({
 userSchema.pre("validate", function () { this.usernameKey = this.username?.toLowerCase(); });
 userSchema.index({ email: 1 }, { unique: true });
 userSchema.index({ usernameKey: 1 }, { unique: true });
-if (process.env.NODE_ENV !== "production" && mongoose.models.User && !mongoose.models.User.schema.path("purchases")?.schema.path("realizedPnl")) mongoose.deleteModel("User");
+if (process.env.NODE_ENV !== "production" && mongoose.models.User && !mongoose.models.User.schema.path("purchases")?.schema.path("settledAmount")) mongoose.deleteModel("User");
 export const User = mongoose.models.User || mongoose.model("User", userSchema);

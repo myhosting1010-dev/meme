@@ -1,0 +1,25 @@
+.modal { position: fixed; inset: 0; margin: auto; width: min(620px, calc(100vw - 32px)); max-width: none; max-height: calc(100dvh - 40px); overflow: auto; padding: 44px; border: 1px solid #232838; border-radius: 32px; background: #101119; color: #f5f5f8; text-align: left; }
+.modal::backdrop { background: #000c; backdrop-filter: blur(6px); }
+.header { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.header h2 { display: flex; align-items: center; gap: 14px; margin: 0; font-size: 28px; }
+.header h2 svg { color: #00dba1; flex-shrink: 0; }
+.header button { display: grid; place-items: center; width: 40px; height: 40px; flex-shrink: 0; border: 1px solid #232838; border-radius: 50%; background: #050608; color: #858d9a; }
+.form { display: grid; gap: 25px; margin-top: 36px; }
+.balance { display: grid; gap: 12px; padding-bottom: 10px; }
+.balance span, .amountLabel label, .field { color: #858d9a; text-transform: uppercase; font-size: 14px; letter-spacing: .5px; }
+.balance strong { color: #00dba1; font-size: 34px; }
+.amountLabel { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
+.amountLabel strong { color: #ffd000; font-size: 14px; text-transform: uppercase; }
+.amount { display: flex; align-items: center; gap: 10px; padding: 14px 16px; border: 1px solid #232838; border-radius: 16px; background: #050505; }
+.amount > span { color: #00dba1; font-size: 24px; }
+.amount input { min-width: 0; width: 100%; border: 0; padding: 0; background: transparent; color: white; outline: none; font-size: 18px; }
+.amount:focus-within { outline: 2px solid #00dba1; }
+.amount button { padding: 8px 10px; border: 0; border-radius: 6px; background: #222633; color: white; font-size: 12px; font-weight: 700; }
+.field { display: grid; gap: 10px; }
+.field input, .field select { width: 100%; padding: 19px 22px; border: 1px solid #232838; border-radius: 16px; background: #050505; color: white; font-size: 18px; text-transform: none; }
+.submit { width: 100%; min-height: 70px; padding: 16px; border: 1px solid #232838; border-radius: 16px; background: #00bb8a; color: #031a13; font-size: 20px; font-weight: 700; }
+.submit:disabled { background: #1a1c24; color: #adb2bc; cursor: not-allowed; }
+.footnote { margin: 0; color: #858d9a; font-size: 12px; line-height: 1.7; text-align: center; }
+.error { margin: 0; color: #ff8992; line-height: 1.5; }
+.success { margin: 0; color: #00dba1; line-height: 1.5; }
+@media(max-width: 600px) { .modal { padding: 24px; border-radius: 24px; } .header h2 { font-size: 22px; } .form { gap: 22px; } .amountLabel label, .amountLabel strong { font-size: 12px; } }

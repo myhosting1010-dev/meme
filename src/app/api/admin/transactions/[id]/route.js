@@ -58,6 +58,21 @@ async function confirmTransaction(id) {
     }
   }
 
+  if (transaction.type === "withdrawal") {
+    // Save the debit and its retry marker atomically on the user's account.
+    // On an ambiguous database failure leave the request processing for safe retry.
+    const debit = await User.collection.updateOne({
+      _id: transaction.userId, balance: { $gte: transaction.amount }, settledTransactionIds: { $ne: transaction._id },
+    }, { $inc: { balance: -transaction.amount }, $addToSet: { settledTransactionIds: transaction._id }, $currentDate: { updatedAt: true } });
+    if (debit.modifiedCount !== 1) {
+      const settled = await User.collection.findOne({ _id: transaction.userId, settledTransactionIds: transaction._id }, { projection: { _id: 1 } });
+      if (!settled) {
+        await Transaction.updateOne({ _id: transaction._id, status: "processing" }, { $set: { status: "pending" } });
+        return adminJson({ error: "Insufficient available balance or user account missing. The withdrawal remains pending." }, 409);
+      }
+    }
+  }
+
   if (transaction.type === "subscription") {
     const upgrade = await User.updateOne({ _id: transaction.userId }, { $set: { membershipPlan: "premium" } });
     if (upgrade.matchedCount !== 1) {
@@ -70,7 +85,7 @@ async function confirmTransaction(id) {
   if (completed) return adminJson({ transaction: serializeReview(completed) });
   const current = await Transaction.findById(transaction._id);
   if (current?.status === "completed") return adminJson({ transaction: serializeReview(current) });
-  return adminJson({ error: "The balance was credited, but the transaction is still processing. Retry confirmation to finish safely." }, 503);
+  return adminJson({ error: "The transaction is still processing. Retry confirmation to finish safely." }, 503);
 }
 
 async function transactionConflict(id) {
